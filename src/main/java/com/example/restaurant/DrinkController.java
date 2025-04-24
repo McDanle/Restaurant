@@ -15,7 +15,7 @@ public class DrinkController {
     public void increaseBukoJuiceQuantity() {
         BukoJuiceQuantity++;
         updateBukoJuiceQuantityLabel();
-    };
+    }
 
     @FXML
     public void decreaseBukoJuiceQuantity() {

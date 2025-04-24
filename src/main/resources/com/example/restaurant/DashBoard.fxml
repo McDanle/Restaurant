@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="customerBorderPane" prefHeight="1038.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.DashBoardController">
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #34495E;" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="History" />
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Profile">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </Button>
+         </children></HBox>
+   </top>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="936.0" prefWidth="1398.0">
+               <children>
+                  <VBox fx:id="menuItemsContainer" prefHeight="936.0" prefWidth="1425.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+        </content>
+      </ScrollPane>
+   </center>
+   <right>
+      <VBox alignment="TOP_CENTER" prefHeight="938.0" prefWidth="343.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Your Cart">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+            <TableView fx:id="cartTable" prefHeight="576.0" prefWidth="325.0">
+               <columns>
+                  <TableColumn fx:id="itemNameColumn" text="Item" />
+                  <TableColumn fx:id="itemPriceColumn" text="Price" />
+                  <TableColumn fx:id="quantityColumn" text="Qty" />
+                  <TableColumn fx:id="totalColumn" text="Total" />
+               </columns>
+            </TableView>
+            <Label fx:id="totalPriceLabel" prefHeight="35.0" prefWidth="333.0" text="Total Price:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="325.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#removeSelectedItem" prefHeight="50.0" prefWidth="130.0" text="Removed Selected" />
+                  <Button mnemonicParsing="false" onAction="#clearCart" prefHeight="50.0" prefWidth="130.0" text="Clear Cart" />
+               </children>
+            </HBox>
+            <ComboBox fx:id="paymentMethodComboBox" prefHeight="50.0" prefWidth="280.0" promptText="Payment Method" />
+            <Button mnemonicParsing="false" onAction="#checkout" prefHeight="50.0" prefWidth="282.0" text="Check Out" />
+         </children></VBox>
+   </right>
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Menu">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font></Label>
+            <Button mnemonicParsing="false" onAction="#handleMainCourse" prefHeight="50.0" prefWidth="150.0" text="Main Course">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#handleDrinks" prefHeight="50.0" prefWidth="150.0" text="Drinks">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

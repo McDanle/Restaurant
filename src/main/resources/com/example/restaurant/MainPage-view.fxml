@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.MainController">
+  <children>
+      <VBox alignment="CENTER" layoutX="150.0" layoutY="25.0" prefHeight="350.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label prefHeight="63.0" prefWidth="213.0" text="Welcome to TastyTap" textAlignment="CENTER">
+               <font>
+                  <Font name="Nirmala UI Bold" size="21.0" />
+               </font>
+            </Label>
+          <Button fx:id="SignUpButton" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="50.0" prefWidth="300.0" style="-fx-effect: shadow;" text=" Create Account">
+            <font>
+              <Font name="System Bold" size="17.0" />
+            </font>
+          </Button>
+          <Button fx:id="LoginButton" mnemonicParsing="false" onAction="#handleLogin" onMouseClicked="#handleLogin" onTouchPressed="#handleLogin" prefHeight="50.0" prefWidth="300.0" style="-fx-effect: shadow;" text="Log-in">
+            <font>
+              <Font name="Verdana Bold" size="20.0" />
+            </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+          </Button>
+         </children>
+      </VBox>
+  </children>
+</AnchorPane>
