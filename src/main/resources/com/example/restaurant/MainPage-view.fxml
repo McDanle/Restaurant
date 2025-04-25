@@ -9,7 +9,7 @@
   <children>
       <VBox alignment="CENTER" layoutX="150.0" layoutY="25.0" prefHeight="350.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label prefHeight="63.0" prefWidth="213.0" text="Welcome to TastyTap" textAlignment="CENTER">
+            <Label alignment="CENTER" prefHeight="63.0" prefWidth="264.0" text="Welcome to TastyTap" textAlignment="CENTER">
                <font>
                   <Font name="Nirmala UI Bold" size="21.0" />
                </font>
