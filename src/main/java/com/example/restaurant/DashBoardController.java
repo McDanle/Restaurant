@@ -1,8 +1,6 @@
 package com.example.restaurant;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,6 +37,16 @@ public class DashBoardController {
     @FXML
     private ComboBox<String> paymentMethodComboBox;
 
+    private static String currentUsername;
+
+    public static void setCurrentUsername(String username) {
+        currentUsername = username;
+    }
+
+    public static String getCurrentUsername() {
+        return currentUsername;
+    }
+
     private ObservableList<Item> cartItems = FXCollections.observableArrayList();
     private static ObservableList<Item> staticCartItems;
     private static ObservableList<Order> orderHistory = FXCollections.observableArrayList();
@@ -47,8 +55,7 @@ public class DashBoardController {
 
     @FXML
     public void initialize() {
-        staticControllerInstance = this;
-
+        staticControllerInstance = this; // Initialize static instance
         itemNameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         itemPriceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
         quantityColumn.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
@@ -84,8 +91,13 @@ public class DashBoardController {
     }
 
     @FXML
-    private void handleHistory(){
-      loadMenu("/com/example/restaurant/History.fxml");
+    private void handleHistory() {
+        loadMenu("/com/example/restaurant/history.fxml");
+    }
+
+    @FXML
+    private void handleProfile() {
+        loadMenu("/com/example/restaurant/Profile.fxml");
     }
 
     private void loadMenu(String fxmlPath) {
@@ -114,98 +126,66 @@ public class DashBoardController {
         cartItems.clear();
         updateTotalPrice();
     }
-//Check Out
-@FXML
-private void checkout() {
-    if (cartItems.isEmpty()) {
-        showAlert("Cart is empty!", "Please add items to your cart before checking out.");
-        return;
-    }
 
-    String paymentMethod = paymentMethodComboBox.getValue();
-    if (paymentMethod == null || paymentMethod.isEmpty()) {
-        showAlert("Select Payment Method", "Please choose a payment method before proceeding.");
-        return;
-    }
-
-    double total = 0;
-    StringBuilder orderDetails = new StringBuilder();
-    StringBuilder itemNames = new StringBuilder();
-    StringBuilder itemQuantities = new StringBuilder();
-    StringBuilder itemPrices = new StringBuilder();
-
-    LocalDateTime now = LocalDateTime.now();
-    String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-    for (Item item : cartItems) {
-        total += item.getTotal();
-
-        itemNames.append(item.getName()).append("\n");
-        itemQuantities.append("x").append(item.getQuantity()).append("\n");
-        itemPrices.append(String.format("₱%.2f", item.getPrice())).append("\n");
-
-        // Build for receipt
-        orderDetails.append("- ")
-                .append(item.getName())
-                .append(" x")
-                .append(item.getQuantity())
-                .append(" = ₱")
-                .append(String.format("%.2f", item.getTotal()))
-                .append("\n");
-    }
-
-    orderDetails.append("\nPayment Method: ").append(paymentMethod);
-
-    orderHistory.add(new Order(
-            itemNames.toString().trim(),
-            itemQuantities.toString().trim(),
-            itemPrices.toString().trim(),
-            paymentMethod,
-            total,
-            time
-    ));
-
-    showReceipt(orderDetails.toString(), total, paymentMethod);
-    cartItems.clear();
-    updateTotalPrice();
-}
-
-//Order
-
-    public static class Order {
-        private final SimpleStringProperty itemNames;
-        private final SimpleStringProperty itemQuantities;
-        private final SimpleStringProperty itemPrices;
-        private final SimpleStringProperty paymentMethod;
-        private final SimpleDoubleProperty totalAmount;
-        private final SimpleStringProperty time;
-
-        public Order(String itemNames, String itemQuantities, String itemPrices,
-                     String paymentMethod, double totalAmount, String time) {
-            this.itemNames = new SimpleStringProperty(itemNames);
-            this.itemQuantities = new SimpleStringProperty(itemQuantities);
-            this.itemPrices = new SimpleStringProperty(itemPrices);
-            this.paymentMethod = new SimpleStringProperty(paymentMethod);
-            this.totalAmount = new SimpleDoubleProperty(totalAmount);
-            this.time = new SimpleStringProperty(time);
+    @FXML
+    private void checkout() {
+        if (cartItems.isEmpty()) {
+            showAlert("Cart is empty!", "Please add items to your cart before checking out.");
+            return;
         }
 
-        public String getItemNames() { return itemNames.get(); }
-        public String getItemQuantities() { return itemQuantities.get(); }
-        public String getItemPrices() { return itemPrices.get(); }
-        public String getPaymentMethod() { return paymentMethod.get(); }
-        public double getTotalAmount() { return totalAmount.get(); }
-        public String getTime() { return time.get(); }
+        String paymentMethod = paymentMethodComboBox.getValue();
+        if (paymentMethod == null || paymentMethod.isEmpty()) {
+            showAlert("Select Payment Method", "Please choose a payment method before proceeding.");
+            return;
+        }
 
-        public SimpleStringProperty itemNamesProperty() { return itemNames; }
-        public SimpleStringProperty itemQuantitiesProperty() { return itemQuantities; }
-        public SimpleStringProperty itemPricesProperty() { return itemPrices; }
-        public SimpleStringProperty paymentMethodProperty() { return paymentMethod; }
-        public SimpleDoubleProperty totalAmountProperty() { return totalAmount; }
-        public SimpleStringProperty timeProperty() { return time; }
+        double total = 0;
+        StringBuilder orderDetails = new StringBuilder();
+        StringBuilder itemNames = new StringBuilder();
+        StringBuilder itemQuantities = new StringBuilder();
+        StringBuilder itemPrices = new StringBuilder();
+
+        LocalDateTime now = LocalDateTime.now();
+        String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        for (Item item : cartItems) {
+            total += item.getTotal();
+
+            itemNames.append(item.getName()).append("\n");
+            itemQuantities.append("x").append(item.getQuantity()).append("\n");
+            itemPrices.append(String.format("₱%.2f", item.getPrice())).append("\n");
+
+            orderDetails.append("- ")
+                    .append(item.getName())
+                    .append(" x")
+                    .append(item.getQuantity())
+                    .append(" = ₱")
+                    .append(String.format("%.2f", item.getTotal()))
+                    .append("\n");
+        }
+
+        orderDetails.append("\nPayment Method: ").append(paymentMethod);
+
+        orderHistory.add(new Order(
+                itemNames.toString().trim(),
+                itemQuantities.toString().trim(),
+                itemPrices.toString().trim(),
+                paymentMethod,
+                total,
+                time,
+                currentUsername
+        ));
+
+        // Refresh HistoryController after checkout
+        if (HistoryController.staticHistoryControllerInstance != null) {
+            HistoryController.staticHistoryControllerInstance.loadOrderHistory();
+        }
+
+        showReceipt(orderDetails.toString(), total, paymentMethod);
+        cartItems.clear();
+        updateTotalPrice();
     }
-
-
 
     private void showReceipt(String orderText, double totalAmount, String paymentMethod) {
         StringBuilder receipt = new StringBuilder();
@@ -228,7 +208,6 @@ private void checkout() {
         receiptAlert.showAndWait();
     }
 
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -242,16 +221,12 @@ private void checkout() {
             for (Item item : staticCartItems) {
                 if (item.getName().equals(name)) {
                     item.setQuantity(item.getQuantity() + quantity);
-                    if (staticControllerInstance != null) {
-                        staticControllerInstance.updateTotalPrice();
-                    }
+                    staticControllerInstance.updateTotalPrice();
                     return;
                 }
             }
             staticCartItems.add(new Item(name, price, quantity));
-            if (staticControllerInstance != null) {
-                staticControllerInstance.updateTotalPrice();
-            }
+            staticControllerInstance.updateTotalPrice();
         }
     }
 
@@ -283,10 +258,57 @@ private void checkout() {
             this.total.set(this.price.get() * quantity);
         }
     }
+
     public static ObservableList<Order> getOrderHistory() {
         return orderHistory;
     }
 
+    public static class Order {
+        private final SimpleStringProperty itemNames;
+        private final SimpleStringProperty itemQuantities;
+        private final SimpleStringProperty itemPrices;
+        private final SimpleStringProperty paymentMethod;
+        private final SimpleDoubleProperty totalAmount;
+        private final SimpleStringProperty time;
+        private final SimpleStringProperty username;
 
+        public Order(String itemNames, String itemQuantities, String itemPrices,
+                     String paymentMethod, double totalAmount, String time, String username) {
+            this.itemNames = new SimpleStringProperty(itemNames);
+            this.itemQuantities = new SimpleStringProperty(itemQuantities);
+            this.itemPrices = new SimpleStringProperty(itemPrices);
+            this.paymentMethod = new SimpleStringProperty(paymentMethod);
+            this.totalAmount = new SimpleDoubleProperty(totalAmount);
+            this.time = new SimpleStringProperty(time);
+            this.username = new SimpleStringProperty(username);
+        }
+
+        public String getItemNames() { return itemNames.get(); }
+        public String getItemQuantities() { return itemQuantities.get(); }
+        public String getItemPrices() { return itemPrices.get(); }
+        public String getPaymentMethod() { return paymentMethod.get(); }
+        public double getTotalAmount() { return totalAmount.get(); }
+        public String getTime() { return time.get(); }
+        public String getUsername() { return username.get(); }
+
+        public SimpleStringProperty itemNamesProperty() { return itemNames; }
+        public SimpleStringProperty itemQuantitiesProperty() { return itemQuantities; }
+        public SimpleStringProperty itemPricesProperty() { return itemPrices; }
+        public SimpleStringProperty paymentMethodProperty() { return paymentMethod; }
+        public SimpleDoubleProperty totalAmountProperty() { return totalAmount; }
+        public SimpleStringProperty timeProperty() { return time; }
+        public SimpleStringProperty usernameProperty() { return username; }
+    }
+    @FXML
+    private Label nameLabel;
+
+    private String Username;
+
+    public void setUsername(String username) {
+        currentUsername = username;
+        if (nameLabel != null) {
+            nameLabel.setText("Welcome, " + username + "!");
+        }
+    }
 
 }

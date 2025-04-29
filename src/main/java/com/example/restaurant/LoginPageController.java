@@ -21,15 +21,25 @@ public class LoginPageController {
     @FXML
     private TextField passwordField;
 
-    // This method handles login and redirects to the dashboard
     @FXML
     private void handleDashBoard(ActionEvent event) {
         String gmail = gmailField.getText();
         String password = passwordField.getText();
 
         if (UserData.validateLogin(gmail, password)) {
+
+            User user = UserData.getUserByGmail(gmail);
+
+            SessionManager.setLoggedInUser(user);
+
             try {
-                BorderPane dashboardPage = FXMLLoader.load(getClass().getResource("DashBoard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
+                BorderPane dashboardPage = loader.load();
+
+                // ✅ Pass the logged-in user's name to the controller
+                DashBoardController controller = loader.getController();
+                controller.setUsername(user.getName()); // or user.getGmail() if you prefer
+
                 Scene dashboardScene = new Scene(dashboardPage);
 
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -43,21 +53,15 @@ public class LoginPageController {
                 window.setHeight(height);
                 window.setMaximized(isMaximized);
                 window.show();
-
             } catch (IOException e) {
                 e.printStackTrace();
+                showError("Error loading Dashboard.fxml!");
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Login Failed");
-            alert.setHeaderText(null);
-            alert.setContentText("Invalid Gmail or Password!");
-            alert.showAndWait();
+            showError("Invalid Gmail or Password!");
         }
     }
 
-
-    // This method handles redirecting to the Sign Up page
     @FXML
     private void handleSignUp2(ActionEvent event) {
         try {
@@ -78,6 +82,15 @@ public class LoginPageController {
 
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Error loading signup-view.fxml!");
         }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

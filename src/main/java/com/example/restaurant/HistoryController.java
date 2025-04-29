@@ -1,60 +1,54 @@
 package com.example.restaurant;
 
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 public class HistoryController {
 
-    @FXML private TableView<DashBoardController.Order> historyTable;
-    @FXML private TableColumn<DashBoardController.Order, String> itemNamesColumn;
-    @FXML private TableColumn<DashBoardController.Order, String> itemQuantitiesColumn;
-    @FXML private TableColumn<DashBoardController.Order, String> itemPricesColumn;
-    @FXML private TableColumn<DashBoardController.Order, String> paymentMethodColumn;
-    @FXML private TableColumn<DashBoardController.Order, Double> totalAmountColumn;
-    @FXML private TableColumn<DashBoardController.Order, String> timeColumn;
+    @FXML
+    private TableView<DashBoardController.Order> historyTable;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> itemNamesColumn;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> itemQuantitiesColumn;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> itemPricesColumn;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> paymentMethodColumn;
+    @FXML
+    private TableColumn<DashBoardController.Order, Double> totalAmountColumn;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> timeColumn;
+
+    public static HistoryController staticHistoryControllerInstance;
 
     @FXML
     public void initialize() {
-        itemNamesColumn.setCellValueFactory(new PropertyValueFactory<>("itemNames"));
-        itemQuantitiesColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantities"));
-        itemPricesColumn.setCellValueFactory(new PropertyValueFactory<>("itemPrices"));
-        paymentMethodColumn.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
-        totalAmountColumn.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        staticHistoryControllerInstance = this;
 
-        historyTable.setItems(DashBoardController.getOrderHistory());
+        itemNamesColumn.setCellValueFactory(data -> data.getValue().itemNamesProperty());
+        itemQuantitiesColumn.setCellValueFactory(data -> data.getValue().itemQuantitiesProperty());
+        itemPricesColumn.setCellValueFactory(data -> data.getValue().itemPricesProperty());
+        paymentMethodColumn.setCellValueFactory(data -> data.getValue().paymentMethodProperty());
+        totalAmountColumn.setCellValueFactory(data -> data.getValue().totalAmountProperty().asObject());
+        timeColumn.setCellValueFactory(data -> data.getValue().timeProperty());
 
-        // Optional: Make text wrap for long cells
-        wrapText(itemNamesColumn);
-        wrapText(itemQuantitiesColumn);
-        wrapText(itemPricesColumn);
+        loadOrderHistory();
     }
 
-    private void wrapText(TableColumn<DashBoardController.Order, String> column) {
-        column.setCellFactory(col -> {
-            TableCell<DashBoardController.Order, String> cell = new TableCell<DashBoardController.Order, String>() {
-                private final javafx.scene.text.Text text = new javafx.scene.text.Text();
+    public void loadOrderHistory() {
+        ObservableList<DashBoardController.Order> allOrders = DashBoardController.getOrderHistory();
 
-                {
-                    setGraphic(text);
-                    text.wrappingWidthProperty().bind(col.widthProperty());
-                    text.getStyleClass().add("table-cell");
-                }
+        // Filter orders for the current user only
+        String currentUser = DashBoardController.getCurrentUsername();
+        ObservableList<DashBoardController.Order> userOrders = allOrders.filtered(
+                order -> order.getUsername().equals(currentUser)
+        );
 
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        text.setText(null);
-                    } else {
-                        text.setText(item);
-                    }
-                }
-            };
-            return cell;
-        });
+        historyTable.setItems(userOrders);
     }
+
 }

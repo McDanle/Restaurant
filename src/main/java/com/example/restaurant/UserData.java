@@ -18,4 +18,13 @@ public class UserData {
         return users.stream().anyMatch(u ->
                 u.getGmail().equalsIgnoreCase(gmail) && u.getPassword().equals(password));
     }
+
+    public static User getUserByGmail(String gmail) {
+        for (User user : users) {
+            if (user.getGmail().equals(gmail)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

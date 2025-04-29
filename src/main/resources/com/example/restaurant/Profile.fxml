@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="1000.0" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.ProfileController">
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Profile Page" />
+
+    <Label fx:id="nameLabel" style="-fx-font-size: 18px;" text="Name: " />
+    <Label fx:id="gmailLabel" style="-fx-font-size: 18px;" text="Gmail: " />
+
+    <TextField fx:id="editNameField" style="-fx-font-size: 18px;" visible="false" />
+
+    <Button fx:id="editButton" onAction="#handleEditProfile" style="-fx-font-size: 16px;" text="Edit Name" />
+    <Button fx:id="saveButton" onAction="#handleSaveChanges" style="-fx-font-size: 16px;" text="Save Changes" visible="false" />
+
+    <Button onAction="#handleLogout" style="-fx-font-size: 16px;" text="Logout" />
+</VBox>

@@ -3,18 +3,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.HistoryController" spacing="10" alignment="CENTER" prefWidth="800" prefHeight="600">
-    <children>
-        <Label text="Order History" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
-        <TableView fx:id="historyTable" prefWidth="600">
-            <columns>
-                <TableColumn fx:id="itemNamesColumn" text="Item Name" prefWidth="150"/>
-                <TableColumn fx:id="itemQuantitiesColumn" text="Quantity" prefWidth="100"/>
-                <TableColumn fx:id="itemPricesColumn" text="Price" prefWidth="100"/>
-                <TableColumn fx:id="paymentMethodColumn" text="Payment Method" prefWidth="100"/>
-                <TableColumn fx:id="totalAmountColumn" text="Total" prefWidth="80"/>
-                <TableColumn fx:id="timeColumn" text="Time" prefWidth="170"/>
-            </columns>
-        </TableView>
-    </children>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.restaurant.HistoryController"
+      spacing="10" alignment="CENTER">
+
+    <TableView fx:id="historyTable">
+        <columns>
+            <TableColumn fx:id="itemNamesColumn" text="Item Names" />
+            <TableColumn fx:id="itemQuantitiesColumn" text="Quantities" />
+            <TableColumn fx:id="itemPricesColumn" text="Prices" />
+            <TableColumn fx:id="paymentMethodColumn" text="Payment" />
+            <TableColumn fx:id="totalAmountColumn" text="Total" />
+            <TableColumn fx:id="timeColumn" text="Time" />
+        </columns>
+    </TableView>
 </VBox>
