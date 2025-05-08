@@ -36,9 +36,8 @@ public class LoginPageController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
                 BorderPane dashboardPage = loader.load();
 
-                // ✅ Pass the logged-in user's name to the controller
                 DashBoardController controller = loader.getController();
-                controller.setUsername(user.getName()); // or user.getGmail() if you prefer
+                controller.setUsername(user.getName());
 
                 Scene dashboardScene = new Scene(dashboardPage);
 
@@ -85,6 +84,30 @@ public class LoginPageController {
             showError("Error loading signup-view.fxml!");
         }
     }
+
+    @FXML
+    private void handleForgotPassword(ActionEvent event) {
+        try {
+            AnchorPane forgotPasswordPage = FXMLLoader.load(getClass().getResource("ForgotPassword.fxml"));
+            Scene forgotPasswordScene = new Scene(forgotPasswordPage);
+
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            double width = window.getWidth();
+            double height = window.getHeight();
+            boolean isMaximized = window.isMaximized();
+
+            window.setScene(forgotPasswordScene);
+            window.setTitle("Forgot Password");
+            window.setWidth(width);
+            window.setHeight(height);
+            window.setMaximized(isMaximized);
+            window.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
