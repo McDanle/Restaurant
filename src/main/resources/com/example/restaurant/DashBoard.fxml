@@ -1,80 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <BorderPane fx:id="customerBorderPane" prefHeight="1000.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.DashBoardController">
+
+   <!-- ========== TOP BAR ========== -->
    <top>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #34495E;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #2C3E50; -fx-padding: 15;">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleHistory" prefHeight="50.0" prefWidth="100.0" text="History" />
-            <Button mnemonicParsing="false" onAction="#handleProfile" prefHeight="50.0" prefWidth="100.0" text="Profile">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Button>
-         </children></HBox>
-   </top>
-   <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="936.0" prefWidth="1398.0">
-               <children>
-                  <VBox fx:id="menuItemsContainer" prefHeight="898.0" prefWidth="906.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children></AnchorPane>
-        </content>
-      </ScrollPane>
-   </center>
-   <right>
-      <VBox alignment="TOP_CENTER" prefHeight="938.0" prefWidth="343.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Your Cart">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font></Label>
-            <TableView fx:id="cartTable" prefHeight="576.0" prefWidth="305.0">
-               <columns>
-                  <TableColumn fx:id="itemNameColumn" prefWidth="95.0" text="Item" />
-                  <TableColumn fx:id="itemPriceColumn" prefWidth="84.0" text="Price" />
-                  <TableColumn fx:id="quantityColumn" prefWidth="78.0" text="Qty" />
-                  <TableColumn fx:id="totalColumn" prefWidth="85.0" text="Total" />
-               </columns>
-            </TableView>
-            <Label fx:id="totalPriceLabel" prefHeight="35.0" prefWidth="333.0" text="Total Price:">
-               <font>
-                  <Font name="System Bold" size="16.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="325.0" spacing="20.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#removeSelectedItem" prefHeight="50.0" prefWidth="130.0" text="Removed Selected" />
-                  <Button mnemonicParsing="false" onAction="#clearCart" prefHeight="50.0" prefWidth="130.0" text="Clear Cart" />
-               </children>
-            </HBox>
-            <ComboBox fx:id="paymentMethodComboBox" prefHeight="50.0" prefWidth="280.0" promptText="Payment Method" />
-            <Button mnemonicParsing="false" onAction="#checkout" prefHeight="50.0" prefWidth="282.0" text="Check Out" />
-         </children></VBox>
-   </right>
-   <left>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Menu">
-               <font>
-                  <Font name="System Bold" size="36.0" />
-               </font></Label>
-            <Button mnemonicParsing="false" onAction="#handleMainCourse" prefHeight="50.0" prefWidth="150.0" text="Main Course">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" onAction="#handleDrinks" prefHeight="50.0" prefWidth="150.0" text="Drinks">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
+            <Label style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" text="TastyTap Restaurant" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleHistory" prefWidth="100" style="-fx-font-size: 14px;" text="History" />
+            <Button onAction="#handleProfile" prefWidth="100" style="-fx-font-size: 14px;" text="Profile" />
          </children>
+      </HBox>
+   </top>
+
+   <!-- ========== LEFT MENU PANEL ========== -->
+   <left>
+      <VBox alignment="TOP_CENTER" spacing="20" style="-fx-background-color: #ECF0F1; -fx-padding: 30;">
+         <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Menu" />
+         <Button onAction="#handleMainCourse" prefWidth="150" style="-fx-font-size: 14px;" text="Main Course" />
+         <Button onAction="#handleDrinks" prefWidth="150" style="-fx-font-size: 14px;" text="Drinks" />
       </VBox>
    </left>
+
+   <!-- ========== CENTER MENU ITEMS ========== -->
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-padding: 20;">
+         <content>
+            <AnchorPane>
+               <VBox fx:id="menuItemsContainer" spacing="20" style="-fx-padding: 20;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+   </center>
+
+   <!-- ========== RIGHT CART PANEL ========== -->
+   <right>
+      <VBox alignment="TOP_CENTER" spacing="15" style="-fx-background-color: #F8F9FA; -fx-padding: 25;">
+         <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Your Cart" />
+
+         <TableView fx:id="cartTable" prefHeight="400.0" prefWidth="320.0">
+            <columns>
+               <TableColumn fx:id="itemNameColumn" prefWidth="100" text="Item" />
+               <TableColumn fx:id="itemPriceColumn" prefWidth="70" text="Price" />
+               <TableColumn fx:id="quantityColumn" prefWidth="50" text="Qty" />
+               <TableColumn fx:id="totalColumn" prefWidth="80" text="Total" />
+            </columns>
+         </TableView>
+
+         <Label fx:id="totalPriceLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #27AE60;" text="Total Price: ₱0.00" />
+
+         <HBox alignment="CENTER" spacing="10">
+            <Button onAction="#removeSelectedItem" prefWidth="130" text="Remove" />
+            <Button onAction="#clearCart" prefWidth="130" text="Clear" />
+         </HBox>
+
+         <!-- PAYMENT COMBOBOX -->
+         <ComboBox fx:id="paymentMethodComboBox" onAction="#handlePaymentMethodChange" prefHeight="45" prefWidth="280" promptText="Select Payment Method" />
+
+         <!-- GCASH PAYMENT CARD -->
+         <VBox fx:id="gcashDetailsBox" managed="false" spacing="10" style="-fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" visible="false">
+            <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="GCash Payment Details" />
+            <TextField fx:id="gcashNumberField" prefHeight="40" prefWidth="280" promptText="Enter GCash Mobile Number" />
+            <TextField fx:id="gcashReferenceField" prefHeight="40" prefWidth="280" promptText="Enter GCash Reference Number" />
+            <Label style="-fx-font-size: 12px; -fx-text-fill: #e67e22;" text="※ Send payment first and enter the correct reference number." wrapText="true" />
+         </VBox>
+
+         <!-- CHECKOUT BUTTON -->
+         <Button onAction="#checkout" prefHeight="50" prefWidth="280" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;" text="Check Out" />
+      </VBox>
+   </right>
 </BorderPane>

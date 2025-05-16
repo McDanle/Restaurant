@@ -37,7 +37,7 @@ public class UserData {
             user.setPassword(newPassword);
             return true;
         }
-        return false; // Either user not found or new password is same as old
+        return false;
     }
 
 

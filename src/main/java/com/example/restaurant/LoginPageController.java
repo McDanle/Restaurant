@@ -1,11 +1,13 @@
 package com.example.restaurant;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -22,43 +24,74 @@ public class LoginPageController {
     private TextField passwordField;
 
     @FXML
+    private ProgressIndicator loadingSpinner;
+
+    @FXML
     private void handleDashBoard(ActionEvent event) {
         String gmail = gmailField.getText();
         String password = passwordField.getText();
 
-        if (UserData.validateLogin(gmail, password)) {
+        loadingSpinner.setVisible(true);
 
-            User user = UserData.getUserByGmail(gmail);
-
-            SessionManager.setLoggedInUser(user);
-
+        new Thread(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
-                BorderPane dashboardPage = loader.load();
+                Thread.sleep(2000); // Simulate network delay
 
-                DashBoardController controller = loader.getController();
-                controller.setUsername(user.getName());
+                if (UserData.validateLogin(gmail, password)) {
+                    User user = UserData.getUserByGmail(gmail);
+                    if (user == null) {
+                        Platform.runLater(() -> {
+                            loadingSpinner.setVisible(false);
+                            showError("User not found!");
+                        });
+                        return;
+                    }
 
-                Scene dashboardScene = new Scene(dashboardPage);
+                    SessionManager.setLoggedInUser(user);
+                    System.out.println("Login successful for user: " + user.getName());
 
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                double width = window.getWidth();
-                double height = window.getHeight();
-                boolean isMaximized = window.isMaximized();
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("DashBoard.fxml"));
+                            BorderPane dashboardPage = loader.load();
+                            DashBoardController controller = loader.getController();
+                            controller.setUsername(user.getName());
 
-                window.setScene(dashboardScene);
-                window.setTitle("Dashboard");
-                window.setWidth(width);
-                window.setHeight(height);
-                window.setMaximized(isMaximized);
-                window.show();
-            } catch (IOException e) {
+                            Scene dashboardScene = new Scene(dashboardPage);
+                            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            double width = window.getWidth();
+                            double height = window.getHeight();
+                            boolean isMaximized = window.isMaximized();
+
+                            window.setScene(dashboardScene);
+                            window.setTitle("Dashboard");
+                            window.setWidth(width);
+                            window.setHeight(height);
+                            window.setMaximized(isMaximized);
+                            window.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showError("Error loading DashBoard.fxml!");
+                        } finally {
+                            loadingSpinner.setVisible(false);
+                        }
+                    });
+
+                } else {
+                    Platform.runLater(() -> {
+                        loadingSpinner.setVisible(false);
+                        showError("Invalid Gmail or Password!");
+                    });
+                }
+
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-                showError("Error loading Dashboard.fxml!");
+                Platform.runLater(() -> {
+                    loadingSpinner.setVisible(false);
+                    showError("Login process was interrupted!");
+                });
             }
-        } else {
-            showError("Invalid Gmail or Password!");
-        }
+        }).start();
     }
 
     @FXML
@@ -78,7 +111,6 @@ public class LoginPageController {
             window.setHeight(height);
             window.setMaximized(isMaximized);
             window.show();
-
         } catch (IOException e) {
             e.printStackTrace();
             showError("Error loading signup-view.fxml!");
@@ -102,12 +134,11 @@ public class LoginPageController {
             window.setHeight(height);
             window.setMaximized(isMaximized);
             window.show();
-
         } catch (IOException e) {
             e.printStackTrace();
+            showError("Error loading ForgotPassword.fxml!");
         }
     }
-
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

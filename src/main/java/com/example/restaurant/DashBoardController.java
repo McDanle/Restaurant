@@ -7,37 +7,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DashBoardController {
 
-    @FXML
-    private VBox menuItemsContainer;
-
-    @FXML
-    private TableView<Item> cartTable;
-
-    @FXML
-    private TableColumn<Item, String> itemNameColumn;
-
-    @FXML
-    private TableColumn<Item, Double> itemPriceColumn;
-
-    @FXML
-    private TableColumn<Item, Integer> quantityColumn;
-
-    @FXML
-    private TableColumn<Item, Double> totalColumn;
-
-    @FXML
-    private Label totalPriceLabel;
-
-    @FXML
-    private ComboBox<String> paymentMethodComboBox;
+    @FXML private VBox menuItemsContainer;
+    @FXML private TableView<Item> cartTable;
+    @FXML private TableColumn<Item, String> itemNameColumn;
+    @FXML private TableColumn<Item, Double> itemPriceColumn;
+    @FXML private TableColumn<Item, Integer> quantityColumn;
+    @FXML private TableColumn<Item, Double> totalColumn;
+    @FXML private Label totalPriceLabel;
+    @FXML private VBox gcashDetailsBox;
+    @FXML private ComboBox<String> paymentMethodComboBox;
+    @FXML private Label nameLabel;
+    @FXML private TextField gcashNumberField;
+    @FXML private TextField gcashReferenceField;
 
     private static String currentUsername;
+    private String gcashName = "";
+    private String gcashNumber = "";
+
+    private ObservableList<Item> cartItems = FXCollections.observableArrayList();
+    private static ObservableList<Item> staticCartItems;
+    private static ObservableList<Order> orderHistory = FXCollections.observableArrayList();
+    public static DashBoardController staticControllerInstance;
 
     public static void setCurrentUsername(String username) {
         currentUsername = username;
@@ -47,15 +44,10 @@ public class DashBoardController {
         return currentUsername;
     }
 
-    private ObservableList<Item> cartItems = FXCollections.observableArrayList();
-    private static ObservableList<Item> staticCartItems;
-    private static ObservableList<Order> orderHistory = FXCollections.observableArrayList();
-
-    private static DashBoardController staticControllerInstance;
-
     @FXML
-    public void initialize() {
-        staticControllerInstance = this; // Initialize static instance
+    private void initialize() {
+        staticControllerInstance = this;
+
         itemNameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         itemPriceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
         quantityColumn.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
@@ -67,47 +59,36 @@ public class DashBoardController {
         handleMainCourse();
         updateTotalPrice();
 
-        // Initialize payment methods
-        paymentMethodComboBox.getItems().addAll("Cash", "GCash", "Credit Card");
+        paymentMethodComboBox.getItems().addAll("Cash", "GCash");
         paymentMethodComboBox.setValue("Cash");
+
+        gcashDetailsBox.setVisible(false);
+        gcashDetailsBox.setManaged(false);
     }
 
     private void updateTotalPrice() {
-        double total = 0;
-        for (Item item : cartItems) {
-            total += item.getTotal();
-        }
+        double total = cartItems.stream().mapToDouble(Item::getTotal).sum();
         totalPriceLabel.setText(String.format("Total: ₱%.2f", total));
     }
 
     @FXML
-    private void handleMainCourse() {
-        loadMenu("/com/example/restaurant/Food-view.fxml");
+    private void handlePaymentMethodChange() {
+        boolean isGCash = "GCash".equals(paymentMethodComboBox.getValue());
+        gcashDetailsBox.setVisible(isGCash);
+        gcashDetailsBox.setManaged(isGCash);
     }
 
-    @FXML
-    private void handleDrinks() {
-        loadMenu("/com/example/restaurant/Drinks.fxml");
-    }
-
-    @FXML
-    private void handleHistory() {
-        loadMenu("/com/example/restaurant/history.fxml");
-    }
-
-    @FXML
-    private void handleProfile() {
-        loadMenu("/com/example/restaurant/Profile.fxml");
-    }
+    @FXML private void handleMainCourse() { loadMenu("/com/example/restaurant/Food-view.fxml"); }
+    @FXML private void handleDrinks() { loadMenu("/com/example/restaurant/Drinks.fxml"); }
+    @FXML private void handleHistory() { loadMenu("/com/example/restaurant/history.fxml"); }
+    @FXML private void handleProfile() { loadMenu("/com/example/restaurant/Profile.fxml"); }
 
     private void loadMenu(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             VBox menuContent = loader.load();
-            menuItemsContainer.getChildren().clear();
-            menuItemsContainer.getChildren().add(menuContent);
+            menuItemsContainer.getChildren().setAll(menuContent);
         } catch (IOException e) {
-            e.printStackTrace();
             showAlert("Load Error", "Could not load the menu: " + fxmlPath);
         }
     }
@@ -140,32 +121,49 @@ public class DashBoardController {
             return;
         }
 
+        if ("GCash".equalsIgnoreCase(paymentMethod)) {
+            String number = gcashNumberField.getText().trim();
+            String reference = gcashReferenceField.getText().trim();
+
+            if (number.isEmpty() || reference.isEmpty()) {
+                showAlert("Incomplete GCash Payment", "Please complete the GCash payment details.");
+                return;
+            }
+
+            gcashNumber = number;
+            gcashName = "Customer";
+            processOrder("GCash", number, reference);
+        } else {
+            processOrder("Cash", null, null);
+        }
+    }
+
+    private void processOrder(String paymentMethod, String number, String reference) {
         double total = 0;
         StringBuilder orderDetails = new StringBuilder();
         StringBuilder itemNames = new StringBuilder();
         StringBuilder itemQuantities = new StringBuilder();
         StringBuilder itemPrices = new StringBuilder();
 
-        LocalDateTime now = LocalDateTime.now();
-        String time = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         for (Item item : cartItems) {
             total += item.getTotal();
-
             itemNames.append(item.getName()).append("\n");
             itemQuantities.append("x").append(item.getQuantity()).append("\n");
             itemPrices.append(String.format("₱%.2f", item.getPrice())).append("\n");
 
-            orderDetails.append("- ")
-                    .append(item.getName())
-                    .append(" x")
-                    .append(item.getQuantity())
-                    .append(" = ₱")
-                    .append(String.format("%.2f", item.getTotal()))
+            orderDetails.append("- ").append(item.getName())
+                    .append(" x").append(item.getQuantity())
+                    .append(" = ₱").append(String.format("%.2f", item.getTotal()))
                     .append("\n");
         }
 
         orderDetails.append("\nPayment Method: ").append(paymentMethod);
+        if ("GCash".equalsIgnoreCase(paymentMethod)) {
+            orderDetails.append("\nGCash Number: ").append(number);
+            orderDetails.append("\nReference No.: ").append(reference);
+        }
 
         orderHistory.add(new Order(
                 itemNames.toString().trim(),
@@ -177,14 +175,16 @@ public class DashBoardController {
                 currentUsername
         ));
 
-        // Refresh HistoryController after checkout
         if (HistoryController.staticHistoryControllerInstance != null) {
             HistoryController.staticHistoryControllerInstance.loadOrderHistory();
         }
 
         showReceipt(orderDetails.toString(), total, paymentMethod);
+
         cartItems.clear();
         updateTotalPrice();
+        gcashName = "";
+        gcashNumber = "";
     }
 
     private void showReceipt(String orderText, double totalAmount, String paymentMethod) {
@@ -201,11 +201,11 @@ public class DashBoardController {
         receiptArea.setEditable(false);
         receiptArea.setWrapText(true);
 
-        Alert receiptAlert = new Alert(Alert.AlertType.INFORMATION);
-        receiptAlert.setTitle("Receipt");
-        receiptAlert.setHeaderText("Order Receipt");
-        receiptAlert.getDialogPane().setContent(receiptArea);
-        receiptAlert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Receipt");
+        alert.setHeaderText("Order Receipt");
+        alert.getDialogPane().setContent(receiptArea);
+        alert.showAndWait();
     }
 
     private void showAlert(String title, String message) {
@@ -214,6 +214,13 @@ public class DashBoardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void setUsername(String username) {
+        currentUsername = username;
+        if (nameLabel != null) {
+            nameLabel.setText("Welcome, " + username + "!");
+        }
     }
 
     public static void addItemToCartStatic(String name, double price, int quantity) {
@@ -230,6 +237,11 @@ public class DashBoardController {
         }
     }
 
+    public static ObservableList<Order> getOrderHistory() {
+        return orderHistory;
+    }
+
+    // ✅ Item Class
     public static class Item {
         private final SimpleStringProperty name;
         private final SimpleDoubleProperty price;
@@ -244,25 +256,26 @@ public class DashBoardController {
         }
 
         public String getName() { return name.get(); }
+        public void setName(String name) { this.name.set(name); }
+        public StringProperty nameProperty() { return name; }
+
         public double getPrice() { return price.get(); }
+        public void setPrice(double price) { this.price.set(price); }
+
         public int getQuantity() { return quantity.get(); }
-        public double getTotal() { return total.get(); }
-
-        public SimpleStringProperty nameProperty() { return name; }
-        public SimpleDoubleProperty priceProperty() { return price; }
-        public SimpleIntegerProperty quantityProperty() { return quantity; }
-        public SimpleDoubleProperty totalProperty() { return total; }
-
         public void setQuantity(int quantity) {
             this.quantity.set(quantity);
-            this.total.set(this.price.get() * quantity);
+            this.total.set(getPrice() * quantity);
         }
+
+        public double getTotal() { return total.get(); }
+        public DoubleProperty totalProperty() { return total; }
+
+        public IntegerProperty quantityProperty() { return quantity; }
+        public DoubleProperty priceProperty() { return price; }
     }
 
-    public static ObservableList<Order> getOrderHistory() {
-        return orderHistory;
-    }
-
+    // ✅ Order Class
     public static class Order {
         private final SimpleStringProperty itemNames;
         private final SimpleStringProperty itemQuantities;
@@ -272,8 +285,7 @@ public class DashBoardController {
         private final SimpleStringProperty time;
         private final SimpleStringProperty username;
 
-        public Order(String itemNames, String itemQuantities, String itemPrices,
-                     String paymentMethod, double totalAmount, String time, String username) {
+        public Order(String itemNames, String itemQuantities, String itemPrices, String paymentMethod, double totalAmount, String time, String username) {
             this.itemNames = new SimpleStringProperty(itemNames);
             this.itemQuantities = new SimpleStringProperty(itemQuantities);
             this.itemPrices = new SimpleStringProperty(itemPrices);
@@ -284,31 +296,24 @@ public class DashBoardController {
         }
 
         public String getItemNames() { return itemNames.get(); }
+        public StringProperty itemNamesProperty() { return itemNames; }
+
         public String getItemQuantities() { return itemQuantities.get(); }
+        public StringProperty itemQuantitiesProperty() { return itemQuantities; }
+
         public String getItemPrices() { return itemPrices.get(); }
+        public StringProperty itemPricesProperty() { return itemPrices; }
+
         public String getPaymentMethod() { return paymentMethod.get(); }
+        public StringProperty paymentMethodProperty() { return paymentMethod; }
+
         public double getTotalAmount() { return totalAmount.get(); }
+        public DoubleProperty totalAmountProperty() { return totalAmount; }
+
         public String getTime() { return time.get(); }
+        public StringProperty timeProperty() { return time; }
+
         public String getUsername() { return username.get(); }
-
-        public SimpleStringProperty itemNamesProperty() { return itemNames; }
-        public SimpleStringProperty itemQuantitiesProperty() { return itemQuantities; }
-        public SimpleStringProperty itemPricesProperty() { return itemPrices; }
-        public SimpleStringProperty paymentMethodProperty() { return paymentMethod; }
-        public SimpleDoubleProperty totalAmountProperty() { return totalAmount; }
-        public SimpleStringProperty timeProperty() { return time; }
-        public SimpleStringProperty usernameProperty() { return username; }
+        public StringProperty usernameProperty() { return username; }
     }
-    @FXML
-    private Label nameLabel;
-
-    private String Username;
-
-    public void setUsername(String username) {
-        currentUsername = username;
-        if (nameLabel != null) {
-            nameLabel.setText("Welcome, " + username + "!");
-        }
-    }
-
 }

@@ -17,6 +17,9 @@ public class ForgotPasswordController {
     private TextField gmailField;
 
     @FXML
+    private PasswordField currentPasswordField;  // Added this
+
+    @FXML
     private PasswordField newPasswordField;
 
     @FXML
@@ -25,15 +28,17 @@ public class ForgotPasswordController {
     @FXML
     private void handleResetPassword() {
         String gmail = gmailField.getText().trim();
+        String currentPassword = currentPasswordField.getText().trim();
         String newPassword = newPasswordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();
 
-        if (gmail.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+        // Check for empty fields
+        if (gmail.isEmpty() || currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "All fields are required.");
             return;
         }
 
-        // Check if Gmail exists
+        // Check if user exists
         if (!UserData.userExists(gmail)) {
             showAlert(Alert.AlertType.ERROR, "Gmail does not exist!");
             return;
@@ -41,18 +46,25 @@ public class ForgotPasswordController {
 
         User user = UserData.getUserByGmail(gmail);
 
-        // Check if new password matches confirm password
+        // Validate current password
+        if (!user.getPassword().equals(currentPassword)) {
+            showAlert(Alert.AlertType.ERROR, "Current password is incorrect!");
+            return;
+        }
+
+        // Check if new password and confirm password match
         if (!newPassword.equals(confirmPassword)) {
             showAlert(Alert.AlertType.ERROR, "Passwords do not match!");
             return;
         }
 
+        // Check if new password is different from the old password
         if (user.getPassword().equals(newPassword)) {
             showAlert(Alert.AlertType.ERROR, "New password must be different from the old password.");
             return;
         }
 
-        // Update the password
+        // Update password
         boolean updated = UserData.updatePassword(gmail, newPassword);
         if (updated) {
             showAlert(Alert.AlertType.INFORMATION, "Password updated successfully!");
@@ -63,7 +75,8 @@ public class ForgotPasswordController {
 
     @FXML
     private void handleBackToLogin() {
-        try {FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             AnchorPane loginPage = fxmlLoader.load();
 
             Scene loginScene = new Scene(loginPage);

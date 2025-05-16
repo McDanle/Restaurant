@@ -4,11 +4,19 @@ public class User {
     private String name;
     private String gmail;
     private String password;
+    private String phone;
+    private String address;
+
+    // ✅ Add this field for the profile image path
+    private String imagePath;
 
     public User(String name, String gmail, String password) {
         this.name = name;
         this.gmail = gmail;
         this.password = password;
+        this.phone = "";
+        this.address = "";
+        this.imagePath = ""; // initialize with empty string
     }
 
     public String getName() {
@@ -18,7 +26,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getGmail() {
         return gmail;
@@ -32,4 +39,28 @@ public class User {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    // ✅ Getter and Setter for imagePath
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }
