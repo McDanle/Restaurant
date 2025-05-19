@@ -25,7 +25,6 @@ public class SignUpController {
     @FXML
     private Button CAButton;
 
-    // Handle the "Create Account" button click
     @FXML
     public void handleCreateAccount() {
         String name = nameField.getText();
@@ -41,12 +40,10 @@ public class SignUpController {
             showAlert("Success", "Account created successfully!");
             clearFields();
 
-            // After successful account creation, load the login screen
             loadLoginScreen();
         }
     }
 
-    // Handle the "Log-in" button click (for demonstration)
     @FXML
     public void handleLogin2() {
         loadLoginScreen();
@@ -61,23 +58,19 @@ public class SignUpController {
         alert.showAndWait();
     }
 
-    // Clear the input fields after a successful account creation
     private void clearFields() {
         nameField.clear();
         gmailField.clear();
         passwordField.clear();
     }
 
-    // Load the login screen after account creation
     private void loadLoginScreen() {
         try {
-            // Load the login FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             AnchorPane root = loader.load();
 
             Scene scene = new Scene(root);
 
-            // Create a new scene and set it on the stage
             Stage stage = (Stage) CAButton.getScene().getWindow();
             double width = stage.getWidth();
             double height = stage.getHeight();

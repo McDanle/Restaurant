@@ -241,7 +241,6 @@ public class DashBoardController {
         return orderHistory;
     }
 
-    // ✅ Item Class
     public static class Item {
         private final SimpleStringProperty name;
         private final SimpleDoubleProperty price;
@@ -275,7 +274,6 @@ public class DashBoardController {
         public DoubleProperty priceProperty() { return price; }
     }
 
-    // ✅ Order Class
     public static class Order {
         private final SimpleStringProperty itemNames;
         private final SimpleStringProperty itemQuantities;

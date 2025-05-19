@@ -42,7 +42,6 @@ public class HistoryController {
     public void loadOrderHistory() {
         ObservableList<DashBoardController.Order> allOrders = DashBoardController.getOrderHistory();
 
-        // Filter orders for the current user only
         String currentUser = DashBoardController.getCurrentUsername();
         ObservableList<DashBoardController.Order> userOrders = allOrders.filtered(
                 order -> order.getUsername().equals(currentUser)

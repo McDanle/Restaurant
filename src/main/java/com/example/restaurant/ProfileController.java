@@ -185,16 +185,16 @@ public class ProfileController {
 
     @FXML
     private void handleChangePassword() {
-        // Create the custom dialog.
+
         Dialog<String[]> dialog = new Dialog<>();
         dialog.setTitle("Change Password");
         dialog.setHeaderText("Please enter your current and new password.");
 
-        // Set the button types.
+
         ButtonType changeButtonType = new ButtonType("Change", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(changeButtonType, ButtonType.CANCEL);
 
-        // Create the password fields
+
         PasswordField currentPassword = new PasswordField();
         currentPassword.setPromptText("Current Password");
 

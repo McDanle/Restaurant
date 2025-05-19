@@ -32,13 +32,13 @@ public class ForgotPasswordController {
         String newPassword = newPasswordField.getText().trim();
         String confirmPassword = confirmPasswordField.getText().trim();
 
-        // Check for empty fields
+
         if (gmail.isEmpty() || currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "All fields are required.");
             return;
         }
 
-        // Check if user exists
+
         if (!UserData.userExists(gmail)) {
             showAlert(Alert.AlertType.ERROR, "Gmail does not exist!");
             return;
@@ -46,25 +46,23 @@ public class ForgotPasswordController {
 
         User user = UserData.getUserByGmail(gmail);
 
-        // Validate current password
+
         if (!user.getPassword().equals(currentPassword)) {
             showAlert(Alert.AlertType.ERROR, "Current password is incorrect!");
             return;
         }
 
-        // Check if new password and confirm password match
         if (!newPassword.equals(confirmPassword)) {
             showAlert(Alert.AlertType.ERROR, "Passwords do not match!");
             return;
         }
 
-        // Check if new password is different from the old password
         if (user.getPassword().equals(newPassword)) {
             showAlert(Alert.AlertType.ERROR, "New password must be different from the old password.");
             return;
         }
 
-        // Update password
+
         boolean updated = UserData.updatePassword(gmail, newPassword);
         if (updated) {
             showAlert(Alert.AlertType.INFORMATION, "Password updated successfully!");
