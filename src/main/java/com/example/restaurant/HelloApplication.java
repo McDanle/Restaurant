@@ -14,8 +14,6 @@ public class HelloApplication extends Application {
 
         Scene scene = new Scene(root);
 
-        scene.getStylesheets().add(getClass().getResource("MainPage.css").toExternalForm());
-
         primaryStage.setTitle("Main Page");
         primaryStage.setScene(scene);
         primaryStage.show();

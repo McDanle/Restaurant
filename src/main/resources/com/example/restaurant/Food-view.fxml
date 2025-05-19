@@ -4,93 +4,97 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="TOP_CENTER" prefHeight="758.0" prefWidth="1006.0" spacing="20.0" style="-fx-background-color: #fefefe; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.FoodController">
+<VBox alignment="TOP_CENTER" prefHeight="758.0" prefWidth="1006.0" spacing="25.0" style="-fx-background-color: #fff8f0; -fx-padding: 30;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.FoodController">
 
-   <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Our Bestselling Foods" />
+   <!-- Section Header -->
+   <Label style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" text="Foods" />
 
-   <GridPane alignment="CENTER" hgap="20" prefHeight="349.0" prefWidth="966.0" style="-fx-padding: 10;" vgap="30">
-      <!-- Define Columns -->
+   <!-- Food Grid -->
+   <GridPane alignment="CENTER" hgap="25" vgap="30">
       <columnConstraints>
          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="220.0" minWidth="220.0" prefWidth="220.0" />
          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       </columnConstraints>
-      <rowConstraints>
-         <RowConstraints valignment="TOP" />
-      </rowConstraints>
 
-      <!-- Dish Template -->
-      <!-- Banana Cue -->
-      <VBox alignment="CENTER" prefWidth="220" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <!-- Shared Card Style -->
+      <!-- We'll reuse this style on all food items -->
+      <!-- Use light warm backgrounds with soft brown borders -->
+
+      <!-- BANANA CUE -->
+      <VBox alignment="CENTER" prefWidth="220" spacing="12" style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" GridPane.columnIndex="0" GridPane.rowIndex="0">
          <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
             <image>
                <Image url="@pictures/BananaCue.png" />
             </image>
          </ImageView>
-         <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Banana Cue" />
-         <Label text="Caramelized saba bananas on a stick. Crispy outside, soft inside – a street food favorite." textAlignment="CENTER" wrapText="true" />
-         <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱10.00" />
+         <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" text="Banana Cue" />
+         <Label style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" text="Caramelized saba bananas on a stick." textAlignment="CENTER" wrapText="true" />
+         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" text="₱10.00" />
          <HBox alignment="CENTER" spacing="5">
             <Button onAction="#decreaseBananaCueQuantity" prefWidth="30" text="−" />
-            <Label fx:id="bananacueQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
+            <Label fx:id="bananacueQuantityLabel" alignment="CENTER" prefWidth="30" style="-fx-font-weight: bold;" text="0" />
             <Button onAction="#increaseBananaCueQuantity" prefWidth="30" text="+" />
          </HBox>
-         <Button fx:id="addBananaCueButton" onAction="#handleAddToCartBananaCue" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+         <Button fx:id="addBananaCueButton" onAction="#handleAddToCartBananaCue" prefWidth="130" style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Add to Cart" />
       </VBox>
 
-      <!-- Kwek Kwek -->
-      <VBox alignment="CENTER" prefWidth="220" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1">
+      <!-- KWEK KWEK -->
+      <VBox alignment="CENTER" prefWidth="220" spacing="12" style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" GridPane.columnIndex="1" GridPane.rowIndex="0">
          <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
             <image>
                <Image url="@pictures/KwekKwek.png" />
             </image>
          </ImageView>
-         <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Kwek Kwek" />
-         <Label text="Deep-fried orange-battered quail eggs served with spiced vinegar or sweet and sour sauce." textAlignment="CENTER" wrapText="true" />
-         <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱15.00" />
+         <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" text="Kwek Kwek" />
+         <Label style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" text="Deep-fried orange-battered quail eggs." textAlignment="CENTER" wrapText="true" />
+         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" text="₱15.00" />
          <HBox alignment="CENTER" spacing="5">
             <Button onAction="#decreaseKwekKwekQuantity" prefWidth="30" text="−" />
-            <Label fx:id="KwekKwekQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
+            <Label fx:id="KwekKwekQuantityLabel" alignment="CENTER" prefWidth="30" style="-fx-font-weight: bold;" text="0" />
             <Button onAction="#increaseKwekKwekQuantity" prefWidth="30" text="+" />
          </HBox>
-         <Button fx:id="addKwekKwekButton" onAction="#handleAddToCartKwekKwek" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+         <Button fx:id="addKwekKwekButton" onAction="#handleAddToCartKwekKwek" prefWidth="130" style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Add to Cart" />
       </VBox>
 
-      <!-- Ham Burger -->
-      <VBox alignment="CENTER" prefWidth="220" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2">
+      <!-- HAM BURGER -->
+      <VBox alignment="CENTER" prefWidth="220" spacing="12" style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
             <image>
                <Image url="@pictures/HamBurger.png" />
             </image>
          </ImageView>
-         <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Ham Burger" />
-         <Label text="Grilled beef patty in a sesame bun with veggies and special sauce." textAlignment="CENTER" wrapText="true" />
-         <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱59.00" />
+         <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" text="Ham Burger" />
+         <Label style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" text="Juicy grilled burger with ham and lettuce." textAlignment="CENTER" wrapText="true" />
+         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" text="₱40.00" />
          <HBox alignment="CENTER" spacing="5">
             <Button onAction="#decreaseHamBurgerQuantity" prefWidth="30" text="−" />
-            <Label fx:id="HamBurgerQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
+            <Label fx:id="HamBurgerQuantityLabel" alignment="CENTER" prefWidth="30" style="-fx-font-weight: bold;" text="0" />
             <Button onAction="#increaseHamBurgerQuantity" prefWidth="30" text="+" />
          </HBox>
-         <Button fx:id="addHamBurgerButton" onAction="#handleAddToCartHamBurger" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+         <Button fx:id="addHamBurgerButton" onAction="#handleAddToCartHamBurger" prefWidth="130" style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Add to Cart" />
       </VBox>
 
-      <!-- Hot Dog -->
-      <VBox alignment="CENTER" prefHeight="333.0" prefWidth="225.0" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="3">
+      <!-- HOT DOG -->
+      <VBox alignment="CENTER" prefWidth="220" spacing="12" style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
             <image>
                <Image url="@pictures/Hotdog.png" />
             </image>
          </ImageView>
-         <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Hot Dog" />
-         <Label text="Filipino-style red hotdog in a soft bun with mayo and ketchup." textAlignment="CENTER" wrapText="true" />
-         <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱35.00" />
+         <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" text="Hot Dog" />
+         <Label style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" text="Grilled hotdog in a bun with your choice of sauce." textAlignment="CENTER" wrapText="true" />
+         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" text="₱25.00" />
          <HBox alignment="CENTER" spacing="5">
             <Button onAction="#decreaseHotDogQuantity" prefWidth="30" text="−" />
-            <Label fx:id="HotDogQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
+            <Label fx:id="HotDogQuantityLabel" alignment="CENTER" prefWidth="30" style="-fx-font-weight: bold;" text="0" />
             <Button onAction="#increaseHotDogQuantity" prefWidth="30" text="+" />
          </HBox>
-         <Button fx:id="addHotDogButton" onAction="#handleAddToCartHotDog" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+         <Button fx:id="addHotDogButton" onAction="#handleAddToCartHotDog" prefWidth="130" style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Add to Cart" />
       </VBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+
    </GridPane>
 </VBox>

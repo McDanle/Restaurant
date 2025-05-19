@@ -1,7 +1,9 @@
 package com.example.restaurant;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,48 +11,40 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ProfileController {
+public class ProfileController implements Initializable {
 
-    @FXML
-    private Label nameLabel;
-
-    @FXML
-    private Label gmailLabel;
-
-    @FXML
-    private Label phoneLabel;
-
-    @FXML
-    private Label addressLabel;
-
-    @FXML
-    private TextField editNameField;
-
-    @FXML
-    private TextField editPhoneField;
-
-    @FXML
-    private TextField editAddressField;
-
-    @FXML
-    private Button editButton;
-
-    @FXML
-    private Button saveButton;
-
-    @FXML
-    private ImageView profileImageView;
-
+    @FXML private Label nameLabel;
+    @FXML private Label gmailLabel;
+    @FXML private Label phoneLabel;
+    @FXML private Label addressLabel;
+    @FXML private TextField editNameField;
+    @FXML private TextField editPhoneField;
+    @FXML private TextField editAddressField;
+    @FXML private Button editButton;
+    @FXML private Button saveButton;
+    @FXML private ImageView profileImageView;
+    @FXML private Circle clipCircle;
     private User currentUser;
 
-    public void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         currentUser = SessionManager.getLoggedInUser();
+
+
+        clipCircle.centerXProperty().bind(profileImageView.fitWidthProperty().divide(2));
+        clipCircle.centerYProperty().bind(profileImageView.fitHeightProperty().divide(2));
+        clipCircle.radiusProperty().bind(
+                Bindings.min(profileImageView.fitWidthProperty(), profileImageView.fitHeightProperty()).divide(2)
+        );
 
         if (currentUser != null) {
             nameLabel.setText(currentUser.getName());
@@ -58,10 +52,15 @@ public class ProfileController {
             phoneLabel.setText(currentUser.getPhone());
             addressLabel.setText(currentUser.getAddress());
 
-            // Load saved profile image
-            if (currentUser.getImagePath() != null && !currentUser.getImagePath().isEmpty()) {
+            String imagePath = currentUser.getImagePath();
+            if (imagePath != null && !imagePath.trim().isEmpty()) {
                 try {
-                    Image image = new Image(currentUser.getImagePath());
+                    Image image;
+                    if (imagePath.startsWith("file:") || imagePath.startsWith("http")) {
+                        image = new Image(imagePath);  // Already a valid URI
+                    } else {
+                        image = new Image("file:" + imagePath); // Convert file path to URI
+                    }
                     profileImageView.setImage(image);
                 } catch (Exception e) {
                     System.out.println("Could not load image: " + e.getMessage());
@@ -71,6 +70,8 @@ public class ProfileController {
             toggleEditMode(false);
         }
     }
+
+
 
     @FXML
     private void handleEditProfile() {
@@ -176,7 +177,7 @@ public class ProfileController {
                 Image image = new Image(imagePath);
                 profileImageView.setImage(image);
 
-                currentUser.setImagePath(imagePath); // Save image path to user
+                currentUser.setImagePath(imagePath);
             } catch (Exception e) {
                 showAlert("Upload Error", "Unable to load selected image.");
             }
@@ -216,7 +217,6 @@ public class ProfileController {
 
         dialog.getDialogPane().setContent(grid);
 
-        // Enable/Disable change button depending on whether all fields are filled
         Node changeButton = dialog.getDialogPane().lookupButton(changeButtonType);
         changeButton.setDisable(true);
 
@@ -236,7 +236,6 @@ public class ProfileController {
                         || confirmPassword.getText().trim().isEmpty())
         );
 
-        // Convert the result to a password array when the change button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == changeButtonType) {
                 return new String[] {
@@ -253,7 +252,6 @@ public class ProfileController {
             String newPassInput = passwords[1];
             String confirmPassInput = passwords[2];
 
-            // Check current password (assuming User has getPassword() method storing hashed or plain password)
             if (!currentPassInput.equals(currentUser.getPassword())) {
                 showAlert("Error", "Current password is incorrect.");
                 return;
@@ -269,7 +267,6 @@ public class ProfileController {
                 return;
             }
 
-            // Update password
             currentUser.setPassword(newPassInput);
             showAlert("Success", "Password changed successfully.");
         });

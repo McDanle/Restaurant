@@ -5,12 +5,14 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/17.0.12"
       fx:controller="com.example.restaurant.HistoryController"
-      spacing="20" alignment="CENTER" style="-fx-padding: 40; -fx-background-color: #f4f4f4;">
+      spacing="20" alignment="CENTER"
+      style="-fx-padding: 40; -fx-background-color: #efebe9;">
 
-    <Label text="Order History" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;" />
+    <Label text="Order History"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #5d4037;" />
 
     <TableView fx:id="historyTable" prefHeight="600.0" prefWidth="1200.0"
-               style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #ddd;">
+               style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #bcaaa4; -fx-background-color: #d7ccc8;">
         <columns>
             <TableColumn fx:id="itemNamesColumn" text="Item Names" prefWidth="250.0" />
             <TableColumn fx:id="itemQuantitiesColumn" text="Quantities" prefWidth="120.0" />

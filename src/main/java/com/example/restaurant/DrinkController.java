@@ -90,4 +90,31 @@ public class DrinkController {
     public void handleAddToCartIcedTea() {
         DashBoardController.addItemToCartStatic("Iced Tea", 20.00, IcedTeaQuantity);
     }
+
+    @FXML
+    private Label PineappleJuiceQuantityLabel;
+    private int PineappleJuiceQuantity = 0;
+    @FXML
+    private void increasePineappleJuiceQuantity() {
+        PineappleJuiceQuantity++;
+        updatePineappleQuantityLabel();
+    }
+
+    @FXML
+    private void decreasePineappleJuiceQuantity() {
+        if (PineappleJuiceQuantity > 0){
+            PineappleJuiceQuantity--;
+        }
+        updatePineappleQuantityLabel();
+    }
+
+    private void updatePineappleQuantityLabel() {
+        PineappleJuiceQuantityLabel.setText(Integer.toString(PineappleJuiceQuantity));
+    }
+
+    @FXML
+    private void handleAddToCartPineappleJuice() {
+        DashBoardController.addItemToCartStatic("Pineapple Juice", 15.00, PineappleJuiceQuantity);
+    }
 }
+

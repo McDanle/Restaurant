@@ -3,74 +3,127 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox alignment="TOP_CENTER" prefHeight="758.0" prefWidth="1006.0" spacing="20.0" style="-fx-background-color: #fefefe; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.DrinkController">
+<VBox alignment="TOP_CENTER" prefHeight="758.0" prefWidth="1006.0" spacing="25.0"
+      style="-fx-background-color: #fff8f0; -fx-padding: 30;"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.restaurant.DrinkController">
 
-    <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #333;" text="Our Refreshing Drinks" />
+    <!-- Section Header -->
+    <Label text="Drinks"
+           style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" />
 
-    <GridPane alignment="CENTER" hgap="20" prefHeight="331.0" prefWidth="903.0" style="-fx-padding: 10;" vgap="30">
+    <!-- Drink Grid -->
+    <GridPane hgap="25" vgap="30" alignment="CENTER">
         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="359.0" minWidth="207.0" prefWidth="223.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="418.0" minWidth="227.0" prefWidth="227.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="433.0" minWidth="247.0" prefWidth="433.0" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="433.0" minWidth="247.0" prefWidth="433.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
         </columnConstraints>
-        <rowConstraints>
-            <RowConstraints valignment="TOP" />
-        </rowConstraints>
 
-        <!-- Buko Juice -->
-        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="220" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="0">
+        <!-- BUKO JUICE -->
+        <VBox alignment="CENTER" spacing="12" prefWidth="220"
+              style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);"
+              GridPane.columnIndex="0" GridPane.rowIndex="0">
             <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
                 <image>
                     <Image url="@pictures/BukoJuice.png" />
                 </image>
             </ImageView>
-            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Buko Juice" />
-            <Label text="Naturally sweet coconut juice with soft strips." textAlignment="CENTER" wrapText="true" />
-            <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱10.00" />
-            <HBox alignment="CENTER" spacing="5">
-                <Button onAction="#decreaseBukoJuiceQuantity" prefWidth="30" text="−" />
-                <Label fx:id="BukoJuiceQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
-                <Button onAction="#increaseBukoJuiceQuantity" prefWidth="30" text="+" />
+            <Label text="Buko Juice" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" />
+            <Label text="Naturally sweet coconut juice with soft strips."
+                   wrapText="true" textAlignment="CENTER"
+                   style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" />
+            <Label text="₱10.00" style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button onAction="#decreaseBukoJuiceQuantity" text="−" prefWidth="30" />
+                <Label fx:id="BukoJuiceQuantityLabel" text="0" alignment="CENTER" prefWidth="30"
+                       style="-fx-font-weight: bold;" />
+                <Button onAction="#increaseBukoJuiceQuantity" text="+" prefWidth="30" />
             </HBox>
-            <Button fx:id="addBukoJuiceButton" onAction="#handleAddToCartBukoJuice" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+            <Button fx:id="addBukoJuiceButton" text="Add to Cart"
+                    onAction="#handleAddToCartBukoJuice"
+                    style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"
+                    prefWidth="130" />
         </VBox>
 
-        <!-- Coke -->
-        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="311.0" prefWidth="355.0" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="1">
+        <!-- COKE -->
+        <VBox alignment="CENTER" spacing="12" prefWidth="220"
+              style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);"
+              GridPane.columnIndex="1" GridPane.rowIndex="0">
             <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
                 <image>
                     <Image url="@pictures/Coke.png" />
                 </image>
             </ImageView>
-            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Coke" />
-            <Label text="Classic fizzy Coca-Cola, ice-cold and refreshing." textAlignment="CENTER" wrapText="true" />
-            <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱20.00" />
-            <HBox alignment="CENTER" spacing="5">
-                <Button onAction="#decreaseCokeQuantity" prefWidth="30" text="−" />
-                <Label fx:id="CokeQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
-                <Button onAction="#increaseCokeQuantity" prefWidth="30" text="+" />
+            <Label text="Coke" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" />
+            <Label text="Classic fizzy Coca-Cola, ice-cold and refreshing."
+                   wrapText="true" textAlignment="CENTER"
+                   style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" />
+            <Label text="₱20.00" style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button onAction="#decreaseCokeQuantity" text="−" prefWidth="30" />
+                <Label fx:id="CokeQuantityLabel" text="0" alignment="CENTER" prefWidth="30"
+                       style="-fx-font-weight: bold;" />
+                <Button onAction="#increaseCokeQuantity" text="+" prefWidth="30" />
             </HBox>
-            <Button fx:id="addCokeButton" onAction="#handleAddToCartCoke" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+            <Button fx:id="addCokeButton" text="Add to Cart"
+                    onAction="#handleAddToCartCoke"
+                    style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"
+                    prefWidth="130" />
         </VBox>
 
-        <!-- Iced Tea -->
-        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="311.0" prefWidth="351.0" spacing="10" style="-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 15;" GridPane.columnIndex="2">
+        <!-- ICED TEA -->
+        <VBox alignment="CENTER" spacing="12" prefWidth="220"
+              style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);"
+              GridPane.columnIndex="0" GridPane.rowIndex="1">
             <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
                 <image>
                     <Image url="@pictures/IcedTea.png" />
                 </image>
             </ImageView>
-            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Iced Tea" />
-            <Label text="Lightly sweetened black tea over ice with lemon." textAlignment="CENTER" wrapText="true" />
-            <Label style="-fx-font-size: 14px; -fx-text-fill: #444;" text="₱20.00" />
-            <HBox alignment="CENTER" spacing="5">
-                <Button onAction="#decreaseIcedTeaQuantity" prefWidth="30" text="−" />
-                <Label fx:id="IcedTeaQuantityLabel" alignment="CENTER" prefWidth="30" text="0" />
-                <Button onAction="#increaseIcedTeaQuantity" prefWidth="30" text="+" />
+            <Label text="Iced Tea" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" />
+            <Label text="Lightly sweetened black tea over ice with lemon."
+                   wrapText="true" textAlignment="CENTER"
+                   style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" />
+            <Label text="₱20.00" style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button onAction="#decreaseIcedTeaQuantity" text="−" prefWidth="30" />
+                <Label fx:id="IcedTeaQuantityLabel" text="0" alignment="CENTER" prefWidth="30"
+                       style="-fx-font-weight: bold;" />
+                <Button onAction="#increaseIcedTeaQuantity" text="+" prefWidth="30" />
             </HBox>
-            <Button fx:id="addIcedTeaButton" onAction="#handleAddToCartIcedTea" prefWidth="120" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Add to Cart" />
+            <Button fx:id="addIcedTeaButton" text="Add to Cart"
+                    onAction="#handleAddToCartIcedTea"
+                    style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"
+                    prefWidth="130" />
+        </VBox>
+
+        <!-- PINEAPPLE JUICE -->
+        <VBox alignment="CENTER" spacing="12" prefWidth="220"
+              style="-fx-background-color: #fff4e6; -fx-border-color: #d4a373; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);"
+              GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <ImageView fitHeight="100" fitWidth="150" preserveRatio="true">
+                <image>
+                    <Image url="@pictures/PineappleJuice.png" />
+                </image>
+            </ImageView>
+            <Label text="Pineapple Juice" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #5a3e2b;" />
+            <Label text="A fresh, sweet, and tangy juice made from ripe pineapple."
+                   wrapText="true" textAlignment="CENTER"
+                   style="-fx-text-fill: #6e5841; -fx-font-size: 13px;" />
+            <Label text="₱15.00" style="-fx-font-size: 14px; -fx-text-fill: #6b8e23;" />
+            <HBox spacing="5" alignment="CENTER">
+                <Button onAction="#decreasePineappleJuiceQuantity" text="−" prefWidth="30" />
+                <Label fx:id="PineappleJuiceQuantityLabel" text="0" alignment="CENTER" prefWidth="30"
+                       style="-fx-font-weight: bold;" />
+                <Button onAction="#increasePineappleJuiceQuantity" text="+" prefWidth="30" />
+            </HBox>
+            <Button fx:id="addPineappleJuiceButton" text="Add to Cart"
+                    onAction="#handleAddToCartPineappleJuice"
+                    style="-fx-background-color: #a3c48b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"
+                    prefWidth="130" />
         </VBox>
     </GridPane>
 </VBox>

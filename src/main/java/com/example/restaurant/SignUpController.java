@@ -3,33 +3,63 @@ package com.example.restaurant;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class SignUpController {
 
-    @FXML
-    private TextField nameField;
+    @FXML private TextField nameField;
+    @FXML private TextField gmailField;
+    @FXML private PasswordField passwordField;
+    @FXML private TextField visiblePasswordField;
+    @FXML private ImageView toggleEyeIcon;
+    @FXML private Button CAButton;
+
+    private boolean isPasswordVisible = false;
+
+    private Image eyeOpenImage;
+    private Image eyeClosedImage;
 
     @FXML
-    private TextField gmailField;
+    public void initialize() {
+        eyeOpenImage = new Image(getClass().getResource("/com/example/restaurant/pictures/open-eye.png").toExternalForm());
+        eyeClosedImage = new Image(getClass().getResource("/com/example/restaurant/pictures/close-eye.png").toExternalForm());
+
+        toggleEyeIcon.setImage(eyeClosedImage);
+
+        visiblePasswordField.setManaged(false);
+        visiblePasswordField.setVisible(false);
+
+        visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+    }
 
     @FXML
-    private PasswordField passwordField;
+    public void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
 
-    @FXML
-    private Button CAButton;
+        if (isPasswordVisible) {
+            visiblePasswordField.setVisible(true);
+            visiblePasswordField.setManaged(true);
+            passwordField.setVisible(false);
+            passwordField.setManaged(false);
+            toggleEyeIcon.setImage(eyeOpenImage);
+        } else {
+            passwordField.setVisible(true);
+            passwordField.setManaged(true);
+            visiblePasswordField.setVisible(false);
+            visiblePasswordField.setManaged(false);
+            toggleEyeIcon.setImage(eyeClosedImage);
+        }
+    }
 
     @FXML
     public void handleCreateAccount() {
         String name = nameField.getText();
         String gmail = gmailField.getText();
-        String password = passwordField.getText();
+        String password = isPasswordVisible ? visiblePasswordField.getText() : passwordField.getText();
 
         if (name.isEmpty() || gmail.isEmpty() || password.isEmpty()) {
             showAlert("Error", "All fields must be filled in!");
@@ -49,9 +79,8 @@ public class SignUpController {
         loadLoginScreen();
     }
 
-    // Show alert dialogs
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -62,6 +91,7 @@ public class SignUpController {
         nameField.clear();
         gmailField.clear();
         passwordField.clear();
+        visiblePasswordField.clear();
     }
 
     private void loadLoginScreen() {

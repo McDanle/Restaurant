@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -17,14 +20,47 @@ import java.io.IOException;
 
 public class LoginPageController {
 
-    @FXML
-    private TextField gmailField;
+    @FXML private TextField gmailField;
+    @FXML private TextField passwordField;
+    @FXML private ProgressIndicator loadingSpinner;
+    @FXML private TextField visiblePasswordField;
+    @FXML private ImageView toggleEyeIcon;
+
+    private Image eyeOpenImage;
+    private Image eyeClosedImage;
+    private boolean isPasswordVisible = false;
 
     @FXML
-    private TextField passwordField;
+    public void initialize() {
+        eyeOpenImage = new Image(getClass().getResource("/com/example/restaurant/pictures/open-eye.png").toExternalForm());
+        eyeClosedImage = new Image(getClass().getResource("/com/example/restaurant/pictures/close-eye.png").toExternalForm());
+
+        toggleEyeIcon.setImage(eyeClosedImage);
+
+        visiblePasswordField.setManaged(false);
+        visiblePasswordField.setVisible(false);
+
+        visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+    }
 
     @FXML
-    private ProgressIndicator loadingSpinner;
+    private void togglePasswordVisibility(javafx.scene.input.MouseEvent event) {
+        if (isPasswordVisible) {
+            visiblePasswordField.setManaged(false);
+            visiblePasswordField.setVisible(false);
+            passwordField.setManaged(true);
+            passwordField.setVisible(true);
+            toggleEyeIcon.setImage(eyeClosedImage);
+            isPasswordVisible = false;
+        } else {
+            visiblePasswordField.setManaged(true);
+            visiblePasswordField.setVisible(true);
+            passwordField.setManaged(false);
+            passwordField.setVisible(false);
+            toggleEyeIcon.setImage(eyeOpenImage);
+            isPasswordVisible = true;
+        }
+    }
 
     @FXML
     private void handleDashBoard(ActionEvent event) {
@@ -35,7 +71,7 @@ public class LoginPageController {
 
         new Thread(() -> {
             try {
-                Thread.sleep(2000); // Simulate network delay
+                Thread.sleep(2000);
 
                 if (UserData.validateLogin(gmail, password)) {
                     User user = UserData.getUserByGmail(gmail);

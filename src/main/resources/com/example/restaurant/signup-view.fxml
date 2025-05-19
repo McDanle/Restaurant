@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1400.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.SignUpController">
+<AnchorPane prefHeight="1000.0" prefWidth="1400.0" style="-fx-background-color: #fbeec1;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.restaurant.SignUpController">
     <children>
-        <VBox alignment="CENTER" layoutX="244.0" layoutY="39.0" prefHeight="900.0" prefWidth="818.0" spacing="15" style="-fx-background-color: white; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10,0,0,5); -fx-background-radius: 15;" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="150.0">
+        <VBox alignment="CENTER" layoutX="244.0" layoutY="39.0" prefHeight="900.0" prefWidth="818.0" spacing="15.0" style="-fx-background-color: #fff8e1; -fx-padding: 50; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12,0,0,6); -fx-background-radius: 20;" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="150.0">
             <children>
-                <Label style="-fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 28px; -fx-text-fill: #333;" text="Create New Account" />
+                <Label style="-fx-font-family: 'Segoe UI Semibold'; -fx-font-size: 28px; -fx-text-fill: #6d4c41;" text="Create New Account" />
 
-                <TextField fx:id="nameField" prefHeight="40" prefWidth="300" promptText="Your Name" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #ddd;" />
+                <TextField fx:id="nameField" maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0" promptText="Your Name" style="-fx-font-size: 15px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #d7ccc8;">
+                    <VBox.margin>
+                        <Insets bottom="8" />
+                    </VBox.margin>
+                </TextField>
 
-                <TextField fx:id="gmailField" prefHeight="40" prefWidth="300" promptText="Gmail" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #ddd;" />
+                <TextField fx:id="gmailField" maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0" promptText="Gmail" style="-fx-font-size: 15px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #d7ccc8;">
+                    <VBox.margin>
+                        <Insets bottom="8" />
+                    </VBox.margin>
+                </TextField>
 
-                <PasswordField fx:id="passwordField" prefHeight="40" prefWidth="300" promptText="Password" style="-fx-font-size: 14px; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #ddd;" />
-
-                <Button fx:id="CAButton" onAction="#handleCreateAccount" prefHeight="45" prefWidth="300" style="-fx-background-color: #0078d7; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" text="Create Account" />
-
-                <HBox alignment="CENTER" prefWidth="300" spacing="10">
+                <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="42" prefWidth="469.0" spacing="10">
                     <children>
-                        <Line endX="100" startX="0" stroke="#aaa" strokeWidth="1" />
-                        <Label style="-fx-text-fill: #666; -fx-font-size: 16px;" text="Or" />
-                        <Line endX="100" startX="0" stroke="#aaa" strokeWidth="1" />
+                        <StackPane alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="42.0" prefWidth="409.0">
+                            <children>
+                                <PasswordField fx:id="passwordField" prefHeight="40.0" prefWidth="400.0" promptText="Password" style="-fx-font-size: 15px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #d7ccc8;" />
+                                <TextField fx:id="visiblePasswordField" managed="false" prefHeight="42" prefWidth="380" promptText="Password" style="-fx-font-size: 15px; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #d7ccc8;" visible="false" />
+                            </children>
+                     <HBox.margin>
+                        <Insets left="32.0" />
+                     </HBox.margin>
+                        </StackPane>
+                        <ImageView fx:id="toggleEyeIcon" fitHeight="24" fitWidth="24" onMouseClicked="#togglePasswordVisibility" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" />
                     </children>
                 </HBox>
 
-                <Button fx:id="LoginButton2" onAction="#handleLogin2" prefHeight="45" prefWidth="300" style="-fx-background-color: transparent; -fx-border-color: #0078d7; -fx-text-fill: #0078d7; -fx-font-weight: bold; -fx-background-radius: 8; -fx-border-radius: 8;" text="Log-in" />
+                <Button fx:id="CAButton" onAction="#handleCreateAccount" prefHeight="48" prefWidth="420" style="-fx-background-color: #ff7043; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 25;" text="Create Account" />
+
+                <HBox alignment="CENTER" prefWidth="420" spacing="10">
+                    <children>
+                        <Line endX="100" startX="0" stroke="#a1887f" strokeWidth="1" />
+                        <Label style="-fx-text-fill: #6d4c41; -fx-font-size: 16px;" text="Or" />
+                        <Line endX="100" startX="0" stroke="#a1887f" strokeWidth="1" />
+                    </children>
+                </HBox>
+
+                <Button fx:id="LoginButton2" onAction="#handleLogin2" prefHeight="48" prefWidth="420" style="-fx-background-color: #8d6e63; -fx-border-color: #a1887f; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; -fx-background-radius: 25; -fx-border-radius: 25;" text="Log-in" />
             </children>
         </VBox>
     </children>
