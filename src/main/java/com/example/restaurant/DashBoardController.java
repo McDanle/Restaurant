@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
 
 public class DashBoardController {
 
@@ -130,13 +132,31 @@ public class DashBoardController {
                 return;
             }
 
+            if (!number.matches("\\d{11}")) {
+                showAlert("Invalid GCash Number", "Please enter a valid 11-digit GCash number.");
+                return;
+            }
+
+            if (reference.length() < 6) {
+                showAlert("Invalid Reference", "Reference number seems too short.");
+                return;
+            }
+
             gcashNumber = number;
-            gcashName = "Customer";
+            gcashName = getCurrentUsername();
+
             processOrder("GCash", number, reference);
+
+            gcashNumberField.clear();
+            gcashReferenceField.clear();
+
         } else {
+            gcashNumber = "";
+            gcashName = "";
             processOrder("Cash", null, null);
         }
     }
+
 
     private void processOrder(String paymentMethod, String number, String reference) {
         double total = 0;
@@ -179,7 +199,8 @@ public class DashBoardController {
             HistoryController.staticHistoryControllerInstance.loadOrderHistory();
         }
 
-        showReceipt(orderDetails.toString(), total, paymentMethod);
+        showReceipt("Order-" + System.currentTimeMillis(), orderDetails.toString(), total, paymentMethod, currentUsername, gcashNumber);
+
 
         cartItems.clear();
         updateTotalPrice();
@@ -187,19 +208,60 @@ public class DashBoardController {
         gcashNumber = "";
     }
 
-    private void showReceipt(String orderText, double totalAmount, String paymentMethod) {
+    private void showReceipt(String orderId, String orderText, double totalAmount, String paymentMethod, String customerName, String contactNumber) {
         StringBuilder receipt = new StringBuilder();
-        receipt.append("======== TASTYTAP RECEIPT ========\n");
-        receipt.append(orderText);
-        receipt.append("\n----------------------------------\n");
-        receipt.append(String.format("TOTAL: ₱%.2f\n", totalAmount));
+
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDate = now.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"));
+        String formattedTime = now.format(DateTimeFormatter.ofPattern("hh:mm a"));
+
+        double vat = totalAmount * 0.12;
+        double subtotal = totalAmount - vat;
+
+        receipt.append("🍽 TastyTap Restaurant\n");
+        receipt.append("📍 123 Street, City\n");
+        receipt.append("📞 (123) 456-7890\n");
+        receipt.append("📧 tastytap@example.com\n\n");
+
+        receipt.append("🧾 Order Receipt\n");
+        receipt.append("Order ID: ").append(orderId).append("\n\n");
+        receipt.append("Date: ").append(formattedDate).append("\n");
+        receipt.append("Time: ").append(formattedTime).append("\n\n");
+
         receipt.append("Payment Method: ").append(paymentMethod).append("\n");
-        receipt.append("Thank you for your order!\n");
-        receipt.append("==================================");
+        receipt.append("Order Type: Dine-in / Take-out\n\n");
+
+        receipt.append("👤 Customer Info\n");
+        receipt.append("Name: ").append(customerName).append("\n");
+        receipt.append("Contact: ").append(contactNumber).append("\n\n");
+
+        receipt.append("🍔 Order Summary\n");
+        receipt.append("Qty\tItem\t\tUnit Price\tTotal\n");
+        receipt.append(orderText).append("\n\n");
+
+        receipt.append(String.format("Subtotal:\t\t\t\t₱%.2f\n", subtotal));
+        receipt.append(String.format("VAT (12%%):\t\t\t\t₱%.2f\n", vat));
+        receipt.append("Discount:\t\t\t\t₱0.00\n");
+        receipt.append(String.format("Total Amount:\t\t\t₱%.2f\n\n", totalAmount));
+
+        receipt.append("💵 Payment Info\n");
+        receipt.append(String.format("Amount Paid:\t\t\t₱%.2f\n", totalAmount));
+        receipt.append("Change:\t\t\t\t₱0.00\n\n");
+
+        receipt.append("✅ Order Status\n");
+        receipt.append("✔️ Payment Received\n");
+        receipt.append("🧑‍🍳 Preparing your order\n");
+        receipt.append("⏱ Estimated Time: 30 minutes\n\n");
+
+        receipt.append("🙏 Thank You!\n");
+        receipt.append("Thank you for ordering from TastyTap!\n");
+        receipt.append("We appreciate your support and hope to serve you again soon.");
 
         TextArea receiptArea = new TextArea(receipt.toString());
         receiptArea.setEditable(false);
         receiptArea.setWrapText(true);
+        receiptArea.setPrefWidth(500);
+        receiptArea.setPrefHeight(600);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Receipt");

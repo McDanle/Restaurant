@@ -7,7 +7,6 @@ public class User {
     private String phone;
     private String address;
 
-    // ✅ Add this field for the profile image path
     private String imagePath;
 
     public User(String name, String gmail, String password) {
@@ -55,7 +54,6 @@ public class User {
         this.address = address;
     }
 
-    // ✅ Getter and Setter for imagePath
     public String getImagePath() {
         return imagePath;
     }
