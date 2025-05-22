@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.scene.control.Alert;
@@ -336,14 +337,17 @@ public class DashBoardController {
         public DoubleProperty priceProperty() { return price; }
     }
 
-    public static class Order {
-        private final SimpleStringProperty itemNames;
-        private final SimpleStringProperty itemQuantities;
-        private final SimpleStringProperty itemPrices;
-        private final SimpleStringProperty paymentMethod;
-        private final SimpleDoubleProperty totalAmount;
-        private final SimpleStringProperty time;
-        private final SimpleStringProperty username;
+
+    public static class Order implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final StringProperty itemNames;
+        private final StringProperty itemQuantities;
+        private final StringProperty itemPrices;
+        private final StringProperty paymentMethod;
+        private final DoubleProperty totalAmount;
+        private final StringProperty time;
+        private final StringProperty username;
 
         public Order(String itemNames, String itemQuantities, String itemPrices, String paymentMethod, double totalAmount, String time, String username) {
             this.itemNames = new SimpleStringProperty(itemNames);
@@ -355,25 +359,20 @@ public class DashBoardController {
             this.username = new SimpleStringProperty(username);
         }
 
-        public String getItemNames() { return itemNames.get(); }
         public StringProperty itemNamesProperty() { return itemNames; }
-
-        public String getItemQuantities() { return itemQuantities.get(); }
         public StringProperty itemQuantitiesProperty() { return itemQuantities; }
-
-        public String getItemPrices() { return itemPrices.get(); }
         public StringProperty itemPricesProperty() { return itemPrices; }
-
-        public String getPaymentMethod() { return paymentMethod.get(); }
         public StringProperty paymentMethodProperty() { return paymentMethod; }
-
-        public double getTotalAmount() { return totalAmount.get(); }
         public DoubleProperty totalAmountProperty() { return totalAmount; }
-
-        public String getTime() { return time.get(); }
         public StringProperty timeProperty() { return time; }
-
-        public String getUsername() { return username.get(); }
         public StringProperty usernameProperty() { return username; }
+
+        public String getItemNames() { return itemNames.get(); }
+        public String getItemQuantities() { return itemQuantities.get(); }
+        public String getItemPrices() { return itemPrices.get(); }
+        public String getPaymentMethod() { return paymentMethod.get(); }
+        public double getTotalAmount() { return totalAmount.get(); }
+        public String getTime() { return time.get(); }
+        public String getUsername() { return username.get(); }
     }
 }

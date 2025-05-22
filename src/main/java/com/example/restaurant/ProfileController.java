@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ProfileController implements Initializable {
@@ -27,6 +29,7 @@ public class ProfileController implements Initializable {
     @FXML private Button editNameButton, editPhoneButton, editAddressButton, saveButton;
     @FXML private ImageView profileImageView;
     @FXML private Circle clipCircle;
+    @FXML private Button deleteAccountButton;
 
     private boolean editingName = false, editingPhone = false, editingAddress = false;
     private User currentUser;
@@ -98,17 +101,15 @@ public class ProfileController implements Initializable {
     private void switchToEditMode(TextField editField, Label label, Button editButton) {
         editField.setText(label.getText());
         toggleEditMode(true);
-        // Hide only the current edit button
+
         editNameButton.setVisible(!editingName);
         editPhoneButton.setVisible(!editingPhone);
         editAddressButton.setVisible(!editingAddress);
 
-        // Show only the current edit field, hide others
         editNameField.setVisible(editingName);
         editPhoneField.setVisible(editingPhone);
         editAddressField.setVisible(editingAddress);
 
-        // Hide labels for fields in edit mode
         nameLabel.setVisible(!editingName);
         phoneLabel.setVisible(!editingPhone);
         addressLabel.setVisible(!editingAddress);
@@ -155,7 +156,6 @@ public class ProfileController implements Initializable {
             toggleEditMode(false);
         }
 
-        // Reset editing flags after saving
         setEditingFlags(false, false, false);
     }
 
@@ -163,7 +163,6 @@ public class ProfileController implements Initializable {
         saveButton.setVisible(isEditing);
 
         if (!isEditing) {
-            // Show labels and edit buttons, hide text fields
             nameLabel.setVisible(true);
             phoneLabel.setVisible(true);
             addressLabel.setVisible(true);
@@ -176,7 +175,6 @@ public class ProfileController implements Initializable {
             editPhoneButton.setVisible(true);
             editAddressButton.setVisible(true);
         }
-        // When editing, the specific edit button/field visibility is handled in switchToEditMode()
     }
 
     @FXML private void handleChangePassword() {
@@ -258,7 +256,6 @@ public class ProfileController implements Initializable {
         }
     }
 
-
     @FXML private void handleUploadImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Profile Picture");
@@ -304,5 +301,52 @@ public class ProfileController implements Initializable {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleDeleteAccount() {
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Delete Account");
+        confirmAlert.setHeaderText("Are you sure you want to delete your account?");
+        confirmAlert.setContentText("This action cannot be undone.");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            deleteUserAccount();
+            SessionManager.setLoggedInUser(null);
+            loadLoginScreen();
+        }
+    }
+
+    private void deleteUserAccount() {
+        User currentUser = SessionManager.getLoggedInUser();
+        if (currentUser != null) {
+            boolean deleted = UserData.deleteUser(currentUser.getGmail());
+            if (deleted) {
+                UserData.clearCurrentUser();
+                SessionManager.setLoggedInUser(null);
+                System.out.println("User account deleted successfully.");
+            } else {
+                System.out.println("Failed to delete user account.");
+            }
+        } else {
+            System.out.println("No user logged in or user is null.");
+        }
+    }
+
+
+
+    private void loadLoginScreen() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/restaurant/login-view.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) deleteAccountButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Page");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Unable to load login screen.");
+        }
     }
 }

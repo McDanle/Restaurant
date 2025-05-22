@@ -5,13 +5,12 @@ import java.util.List;
 
 public class UserData {
 
-
     private static final List<User> users = new ArrayList<>();
+    private static User currentUser;
 
     public static void addUser(User user) {
         users.add(user);
     }
-
 
     public static boolean userExists(String gmail) {
         return users.stream().anyMatch(u -> u.getGmail().equalsIgnoreCase(gmail));
@@ -40,8 +39,23 @@ public class UserData {
         return false;
     }
 
+    public static boolean deleteUser(String gmail) {
+        return users.removeIf(u -> u.getGmail().equalsIgnoreCase(gmail));
+    }
 
     public static List<User> getAllUsers() {
         return new ArrayList<>(users);
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    public static void clearCurrentUser() {
+        currentUser = null;
     }
 }

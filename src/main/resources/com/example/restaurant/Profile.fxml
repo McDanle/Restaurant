@@ -21,41 +21,35 @@
 
     <VBox alignment="CENTER_LEFT" maxWidth="600" spacing="15">
 
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <HBox alignment="CENTER_LEFT" spacing="10.0" maxWidth="600" prefWidth="600">
             <Label style="-fx-font-weight: bold; -fx-text-fill: #6d4c41; -fx-font-size: 16px;" text="Name:" />
             <Label fx:id="nameLabel" style="-fx-text-fill: #6d4c41; -fx-font-size: 16px;" />
             <TextField fx:id="editNameField" style="-fx-font-size: 16px;" visible="false" />
-            <Button fx:id="editNameButton" onAction="#handleEditName" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit">
-            <HBox.margin>
-               <Insets left="163.0" />
-            </HBox.margin></Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="editNameButton" onAction="#handleEditName" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit" />
         </HBox>
+
 
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <Label style="-fx-font-weight: bold; -fx-text-fill: #6d4c41; -fx-font-size: 16px;" text="Email:" />
             <Label fx:id="gmailLabel" style="-fx-text-fill: #6d4c41; -fx-font-size: 16px;" />
         </HBox>
 
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <HBox alignment="CENTER_LEFT" spacing="10.0" maxWidth="600" prefWidth="600">
             <Label style="-fx-font-weight: bold; -fx-text-fill: #6d4c41; -fx-font-size: 16px;" text="Phone:" />
             <Label fx:id="phoneLabel" style="-fx-text-fill: #6d4c41; -fx-font-size: 16px;" />
             <TextField fx:id="editPhoneField" style="-fx-font-size: 16px;" visible="false" />
-            <Button fx:id="editPhoneButton" onAction="#handleEditPhone" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit">
-            <HBox.margin>
-               <Insets left="162.0" />
-            </HBox.margin></Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="editPhoneButton" onAction="#handleEditPhone" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit" />
         </HBox>
 
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <HBox alignment="CENTER_LEFT" spacing="10.0" maxWidth="600" prefWidth="600">
             <Label style="-fx-font-weight: bold; -fx-text-fill: #6d4c41; -fx-font-size: 16px;" text="Address:" />
             <Label fx:id="addressLabel" style="-fx-text-fill: #6d4c41; -fx-font-size: 16px;" />
             <TextField fx:id="editAddressField" style="-fx-font-size: 16px;" visible="false" />
-            <Button fx:id="editAddressButton" onAction="#handleEditAddress" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit">
-            <HBox.margin>
-               <Insets left="150.0" />
-            </HBox.margin></Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="editAddressButton" onAction="#handleEditAddress" style="-fx-font-size: 12px; -fx-background-color: #ff7043; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand;" text="Edit" />
         </HBox>
-
     </VBox>
 
 
@@ -63,6 +57,7 @@
         <Button fx:id="saveButton" onAction="#handleSaveChanges" style="-fx-background-color: #ffe0b2; -fx-text-fill: #6d4c41; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Save Changes" visible="false" />
         <Button fx:id="changePasswordButton" onAction="#handleChangePassword" style="-fx-background-color: #ff7043; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Change Password" />
         <Button fx:id="logoutButton" onAction="#handleLogout" style="-fx-background-color: #ff7043; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Logout" />
+        <Button fx:id="deleteAccountButton" onAction="#handleDeleteAccount" style="-fx-background-color: #d32f2f; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Delete Account" />
     </HBox>
 
 
