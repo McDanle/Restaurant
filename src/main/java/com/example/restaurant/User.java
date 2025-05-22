@@ -15,7 +15,7 @@ public class User {
         this.password = password;
         this.phone = "";
         this.address = "";
-        this.imagePath = ""; // initialize with empty string
+        this.imagePath = "";
     }
 
     public String getName() {
