@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
@@ -29,6 +30,9 @@ public class DashBoardController {
     @FXML private Label nameLabel;
     @FXML private TextField gcashNumberField;
     @FXML private TextField gcashReferenceField;
+
+    @FXML private TextField customerNameField;
+
 
     private static String currentUsername;
     private String gcashName = "";
@@ -83,7 +87,7 @@ public class DashBoardController {
 
     @FXML private void handleMainCourse() { loadMenu("/com/example/restaurant/Food-view.fxml"); }
     @FXML private void handleDrinks() { loadMenu("/com/example/restaurant/Drinks.fxml"); }
-    @FXML private void handleHistory() { loadMenu("/com/example/restaurant/history.fxml"); }
+    @FXML private void handleHistory() {loadMenu("/com/example/restaurant/history.fxml"); }
     @FXML private void handleProfile() { loadMenu("/com/example/restaurant/Profile.fxml"); }
 
     private void loadMenu(String fxmlPath) {
@@ -186,28 +190,23 @@ public class DashBoardController {
             orderDetails.append("\nReference No.: ").append(reference);
         }
 
-        orderHistory.add(new Order(
-                itemNames.toString().trim(),
-                itemQuantities.toString().trim(),
-                itemPrices.toString().trim(),
-                paymentMethod,
-                total,
-                time,
-                currentUsername
-        ));
-
-        if (HistoryController.staticHistoryControllerInstance != null) {
-            HistoryController.staticHistoryControllerInstance.loadOrderHistory();
+        String customerName = customerNameField.getText().trim();
+        if (customerName.isEmpty()) {
+            customerName = "Guest";
         }
 
-        showReceipt("Order-" + System.currentTimeMillis(), orderDetails.toString(), total, paymentMethod, currentUsername, gcashNumber);
+        Order order = new Order(customerName, itemNames.toString(), itemQuantities.toString(), itemPrices.toString(), paymentMethod, total, time);
+        orderHistory.add(order);
 
+        showAlert("Order Confirmed", "Thank you, " + customerName + "! Your order has been placed.\n\n" + orderDetails.toString());
 
-        cartItems.clear();
-        updateTotalPrice();
-        gcashName = "";
-        gcashNumber = "";
+        clearCart();
+        customerNameField.clear();
+        paymentMethodComboBox.setValue("Cash");
+        gcashDetailsBox.setVisible(false);
+        gcashDetailsBox.setManaged(false);
     }
+
 
     private void showReceipt(String orderId, String orderText, double totalAmount, String paymentMethod, String customerName, String contactNumber) {
         StringBuilder receipt = new StringBuilder();
@@ -347,32 +346,33 @@ public class DashBoardController {
         private final StringProperty paymentMethod;
         private final DoubleProperty totalAmount;
         private final StringProperty time;
-        private final StringProperty username;
+        private final StringProperty name;
 
-        public Order(String itemNames, String itemQuantities, String itemPrices, String paymentMethod, double totalAmount, String time, String username) {
+        public Order(String username, String itemNames, String itemQuantities, String itemPrices,
+                     String paymentMethod, double totalAmount, String time) {
+            this.name = new SimpleStringProperty(username);
             this.itemNames = new SimpleStringProperty(itemNames);
             this.itemQuantities = new SimpleStringProperty(itemQuantities);
             this.itemPrices = new SimpleStringProperty(itemPrices);
             this.paymentMethod = new SimpleStringProperty(paymentMethod);
             this.totalAmount = new SimpleDoubleProperty(totalAmount);
             this.time = new SimpleStringProperty(time);
-            this.username = new SimpleStringProperty(username);
         }
 
-        public StringProperty itemNamesProperty() { return itemNames; }
-        public StringProperty itemQuantitiesProperty() { return itemQuantities; }
-        public StringProperty itemPricesProperty() { return itemPrices; }
-        public StringProperty paymentMethodProperty() { return paymentMethod; }
-        public DoubleProperty totalAmountProperty() { return totalAmount; }
-        public StringProperty timeProperty() { return time; }
-        public StringProperty usernameProperty() { return username; }
-
-        public String getItemNames() { return itemNames.get(); }
-        public String getItemQuantities() { return itemQuantities.get(); }
-        public String getItemPrices() { return itemPrices.get(); }
-        public String getPaymentMethod() { return paymentMethod.get(); }
-        public double getTotalAmount() { return totalAmount.get(); }
-        public String getTime() { return time.get(); }
-        public String getUsername() { return username.get(); }
+        public String getname() {return name.get();}
+        public StringProperty usernameProperty() {return name;}
+        public String getItemNames() {return itemNames.get();}
+        public StringProperty itemNamesProperty() {return itemNames;}
+        public String getItemQuantities() {return itemQuantities.get();}
+        public StringProperty itemQuantitiesProperty() {return itemQuantities;}
+        public String getItemPrices() {return itemPrices.get();}
+        public StringProperty itemPricesProperty() {return itemPrices;}
+        public String getPaymentMethod() {return paymentMethod.get();}
+        public StringProperty paymentMethodProperty() {return paymentMethod;}
+        public double getTotalAmount() {return totalAmount.get();}
+        public DoubleProperty totalAmountProperty() {return totalAmount;}
+        public String getTime() {return time.get();}
+        public StringProperty timeProperty() {return time;}
     }
+
 }

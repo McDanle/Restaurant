@@ -54,6 +54,8 @@
             <Button onAction="#clearCart" prefWidth="130" style="-fx-background-color: #ffe0b2; -fx-background-radius: 10;" text="Clear" />
          </HBox>
 
+         <TextField fx:id="customerNameField" prefHeight="40" prefWidth="280" promptText="Enter Your Name" style="-fx-background-radius: 10; -fx-border-color: #d7ccc8;" />
+
          <ComboBox fx:id="paymentMethodComboBox" onAction="#handlePaymentMethodChange" prefHeight="45" prefWidth="280" promptText="Select Payment Method" style="-fx-background-radius: 10;" />
 
          <VBox fx:id="gcashDetailsBox" managed="false" spacing="10" style="-fx-padding: 15; -fx-border-color: #d7ccc8; -fx-border-radius: 10; -fx-background-color: #ffffff; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" visible="false">

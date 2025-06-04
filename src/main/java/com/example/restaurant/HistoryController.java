@@ -1,12 +1,13 @@
 package com.example.restaurant;
 
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 public class HistoryController {
+
+    public static HistoryController staticHistoryControllerInstance;
 
     @FXML
     private TableView<DashBoardController.Order> historyTable;
@@ -22,8 +23,8 @@ public class HistoryController {
     private TableColumn<DashBoardController.Order, Double> totalAmountColumn;
     @FXML
     private TableColumn<DashBoardController.Order, String> timeColumn;
-
-    public static HistoryController staticHistoryControllerInstance;
+    @FXML
+    private TableColumn<DashBoardController.Order, String> nameColumn;
 
     @FXML
     public void initialize() {
@@ -35,19 +36,14 @@ public class HistoryController {
         paymentMethodColumn.setCellValueFactory(data -> data.getValue().paymentMethodProperty());
         totalAmountColumn.setCellValueFactory(data -> data.getValue().totalAmountProperty().asObject());
         timeColumn.setCellValueFactory(data -> data.getValue().timeProperty());
+        nameColumn.setCellValueFactory(data -> data.getValue().usernameProperty());
 
         loadOrderHistory();
     }
 
+    // ✅ FIXED: Now shows all orders, not just orders for logged-in user
     public void loadOrderHistory() {
         ObservableList<DashBoardController.Order> allOrders = DashBoardController.getOrderHistory();
-
-        String currentUser = DashBoardController.getCurrentUsername();
-        ObservableList<DashBoardController.Order> userOrders = allOrders.filtered(
-                order -> order.getUsername().equals(currentUser)
-        );
-
-        historyTable.setItems(userOrders);
+        historyTable.setItems(allOrders);
     }
-
 }

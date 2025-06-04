@@ -14,6 +14,7 @@
     <TableView fx:id="historyTable" prefHeight="600.0" prefWidth="1200.0"
                style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #bcaaa4; -fx-background-color: #d7ccc8;">
         <columns>
+            <TableColumn fx:id="nameColumn" text="Customer Name" prefWidth="150.0" />
             <TableColumn fx:id="itemNamesColumn" text="Item Names" prefWidth="250.0" />
             <TableColumn fx:id="itemQuantitiesColumn" text="Quantities" prefWidth="120.0" />
             <TableColumn fx:id="itemPricesColumn" text="Prices" prefWidth="120.0" />
@@ -21,5 +22,6 @@
             <TableColumn fx:id="totalAmountColumn" text="Total" prefWidth="120.0" />
             <TableColumn fx:id="timeColumn" text="Time" prefWidth="200.0" />
         </columns>
+
     </TableView>
 </VBox>
